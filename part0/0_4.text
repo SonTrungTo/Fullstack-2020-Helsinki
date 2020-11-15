@@ -1,0 +1,16 @@
+title Creating new note on https://studies.cs.helsinki.fi/exampleapp/notes
+
+note over browser: HTTP POST is sent by form to /exampleapp/new_note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server-->browser: Redirect browser to /exampleapp/notes (302) with added note
+note over browser: Browser is now re-loading the page
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: CSS-code (a.k.a, main.css)
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: JS-code (a.k.a, main.js)
+note over browser: Browser now runs JS-code to fetch data from data.json
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{content: 'I am beautiful', date: '01-10-1992'}, ...]
+note over browser: Browser processes event handler to display results by manipulating DOM
