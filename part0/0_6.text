@@ -1,0 +1,6 @@
+title Post a message at https://studies.cs.helsinki.fi/exampleapp/spa
+
+note over browser: There is no reloading the page thanks to e.preventDefault(); page is redraw and added with new message from the notes array.
+browser->server: HTTP POST https://exampleapp/new_note_spa
+server-->browser: status: 201, [..., {'content': 'event.target.elements[0].value', 'date': 'new Date()'}]
+note over browser: data.json will only be displayed at when another GET request is made.
