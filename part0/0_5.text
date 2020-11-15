@@ -1,0 +1,12 @@
+title Visiting https://studies.cs.helsinki.fi/exampleapp/spa
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: CSS-code (a.k.a, main.css)
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: JS-code (a.k.a, spa.js)
+note over browser: Browser now runs JS-code to fetch data from data.json
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{content: 'I am beautiful', date: '01-10-1992'}, ...]
+note over browser: Browser processes event handler to display results by manipulating DOM(JSON.parse is used because of application/json)
