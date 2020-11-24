@@ -13,7 +13,8 @@ export default function ListCountries(props) {
                             <br />
                         </React.Fragment>)}
                 </React.Fragment>
-            ) : <ListCountry country={ props.countries[0] } /> }
+            ) : <ListCountry country={ props.countries[0] }
+            weatherInfo={ props.weatherInfo } /> }
         </div>
     );
 };
