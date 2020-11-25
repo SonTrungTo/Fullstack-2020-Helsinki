@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-1234567",
+      "number": "0908566156",
       "id": "1"
     },
     {
@@ -31,11 +31,6 @@
       "id": "dKAWogi"
     },
     {
-      "name": "Saarastiina Nurmela",
-      "number": "123-345-73462",
-      "id": "Hm-LwZM"
-    },
-    {
       "name": "Crazy Sarppa",
       "number": "12354-2345635-45",
       "id": "XgDOnAO"
@@ -54,6 +49,16 @@
       "name": "Andrew Ng",
       "number": "034572388467",
       "id": "fE0WzWm"
+    },
+    {
+      "name": "Jackie Chan",
+      "number": "238-45673-234",
+      "id": "23Wh3Jd"
+    },
+    {
+      "name": "Jackie Evancho",
+      "number": "0343771232",
+      "id": "MIBDB0N"
     }
   ]
 }

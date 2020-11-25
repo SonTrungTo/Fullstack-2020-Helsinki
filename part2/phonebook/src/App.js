@@ -29,9 +29,18 @@ export default function App() {
     const clickSubmit = (event) => {
         event.preventDefault();
         if (persons.map(person => person.name).indexOf(newName.trim()) !== -1) {
-            window.alert(`${newName} is already added to phonebook`);
-            setNewName('');
-            setNewNumber('');
+            const isUpdated = window.confirm(`${newName} is already added to phonebook, `
+            + 'replace the old number with a new one?');
+            if (isUpdated) {
+                const person = persons.find(person => person.name === newName.trim());
+                const updatedPerson = {...person, number: newNumber};
+                personsService.update(person.id, updatedPerson)
+                .then(updatedP => {
+                    setPersons(persons.map(p => p.id !== person.id ? p : updatedP));
+                    setNewName('');
+                    setNewNumber('');
+                });
+            }
             return;
         }
         const newPerson={name: newName, number: newNumber};
