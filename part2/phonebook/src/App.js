@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import personsService from "./services/persons";
 
 export default function App() {
     const [persons, setPersons] = useState([]);
@@ -11,10 +11,9 @@ export default function App() {
     const [nameFilter, setNameFilter] = useState('');
 
     useEffect(() => {
-        axios
-        .get('http://localhost:3001/persons')
-        .then(response => {
-            setPersons(response.data);
+        personsService.getAll()
+        .then(list => {
+            setPersons(list);
         });
     }, []);
 
@@ -36,9 +35,23 @@ export default function App() {
             return;
         }
         const newPerson={name: newName, number: newNumber};
-        setPersons(persons.concat(newPerson));
-        setNewName('');
-        setNewNumber('');
+        personsService.create(newPerson)
+        .then(returnedPerson => {
+            setPersons(persons.concat(returnedPerson));
+            setNewName('');
+            setNewNumber('');
+        });
+    };
+    const clickDelete = requestedPerson => event => {
+        const isDeleted = window.confirm(`Delete ${requestedPerson.name}?`);
+        if (isDeleted) {
+            personsService.remove(requestedPerson.id)
+            .then(removedPerson => {
+                // This is one of the weird stuffs of Axios, why response.data is an empty Object?
+                const newPersons = persons.filter(person => person.id !== requestedPerson.id);
+                setPersons(newPersons);
+            });
+        }
     };
     const personsToShow = nameFilter.length === 0 ? persons :
         persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()));
@@ -52,7 +65,8 @@ export default function App() {
             valueNewName={ newName } handleChangeName={ handleChangeName }
             valueNewNumber={ newNumber } handleChangeNumber={ handleChangeNumber } />
             <h3>Numbers</h3>
-            <Persons persons={ personsToShow } />
+            <Persons persons={ personsToShow }
+            buttonDelete={ clickDelete } />
         </div>
     );
 };

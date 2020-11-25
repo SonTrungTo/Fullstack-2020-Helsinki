@@ -5,7 +5,8 @@ export default function Persons(props) {
     return (
         <div>
             { props.persons.map(person => 
-            <Person key={person.name} person={ person } />
+            <Person key={person.name} person={ person }
+            buttonDelete={ props.buttonDelete } />
             ) }
         </div>
     );
