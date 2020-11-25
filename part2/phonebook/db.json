@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "0908566156",
+      "number": "02347572734",
       "id": "1"
     },
     {
@@ -21,16 +21,6 @@
       "id": "4"
     },
     {
-      "name": "Son To",
-      "number": "0403697874",
-      "id": "4yHmNXF"
-    },
-    {
-      "name": "Aku Kalliolevo",
-      "number": "123-345-657568",
-      "id": "dKAWogi"
-    },
-    {
       "name": "Crazy Sarppa",
       "number": "12354-2345635-45",
       "id": "XgDOnAO"
@@ -39,11 +29,6 @@
       "name": "Katie Muonio",
       "number": "0403638245",
       "id": "rgf-B0u"
-    },
-    {
-      "name": "AK-47",
-      "number": "1234234",
-      "id": "ujEEve7"
     },
     {
       "name": "Andrew Ng",

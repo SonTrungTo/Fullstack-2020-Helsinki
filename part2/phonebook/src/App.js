@@ -3,12 +3,15 @@ import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import personsService from "./services/persons";
+import Notification from "./components/Notification";
 
 export default function App() {
     const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [nameFilter, setNameFilter] = useState('');
+    const [message, setMessage] = useState(null);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
         personsService.getAll()
@@ -39,6 +42,19 @@ export default function App() {
                     setPersons(persons.map(p => p.id !== person.id ? p : updatedP));
                     setNewName('');
                     setNewNumber('');
+                    setMessage(`Updated ${updatedP.name}`);
+                    setIsSuccess(true);
+                    setTimeout(() => {
+                        setMessage(null);
+                        setIsSuccess(false);
+                    }, 5000);
+                })
+                .catch(error => {
+                    setMessage(`Information of ${person.name} has been removed from the server.`);
+                    setTimeout(() => {
+                        setMessage(null);
+                    }, 5000);
+                    setPersons(persons.filter(p => p.id !== person.id));
                 });
             }
             return;
@@ -49,6 +65,12 @@ export default function App() {
             setPersons(persons.concat(returnedPerson));
             setNewName('');
             setNewNumber('');
+            setMessage(`Added ${returnedPerson.name}`);
+            setIsSuccess(true);
+            setTimeout(() => {
+                setMessage(null);
+                setIsSuccess(false);
+            }, 5000);
         });
     };
     const clickDelete = requestedPerson => event => {
@@ -59,6 +81,12 @@ export default function App() {
                 // This is one of the weird stuffs of Axios, why response.data is an empty Object?
                 const newPersons = persons.filter(person => person.id !== requestedPerson.id);
                 setPersons(newPersons);
+                setMessage(`Deleted ${requestedPerson.name}`);
+                setIsSuccess(true);
+                setTimeout(() => {
+                    setMessage(null);
+                    setIsSuccess(false);
+                }, 5000);
             });
         }
     };
@@ -68,6 +96,7 @@ export default function App() {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={ message } isSuccess={ isSuccess } />
             <Filter value={ nameFilter } handleChange={ handleChangeFilter } />
             <h3>add a new</h3>
             <PersonForm handleSubmit={ clickSubmit }
