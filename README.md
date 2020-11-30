@@ -1,5 +1,7 @@
 # [Full stack Open 2020](https://fullstackopen.com/en)
 
+## Part 3 in progress...
+
 ## [Part 2](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part2)
 - [Countries](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part2/countries) Countries displaying basic infos
 - [Course Info](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part2/courseinfo) Course info continued, refactored
