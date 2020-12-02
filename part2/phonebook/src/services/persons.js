@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = '/persons';
+const baseUrl = '/persons'; /* the 'build' directory is built with '/api/persons' */
 let personsService = {};
 
 const getAll = () => {
