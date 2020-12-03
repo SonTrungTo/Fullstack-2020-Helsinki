@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = '/persons'; /* the 'build' directory is built with '/api/persons' */
+const baseUrl = '/api/persons'; /* start this with server in part 3, for json-server, change into '/persons' */
 let personsService = {};
 
 const getAll = () => {
