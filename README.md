@@ -1,6 +1,8 @@
 # [Full stack Open 2020](https://fullstackopen.com/en)
 
-## Part 3 in progress...
+## [Part 3](https://github.com/SonTrungTo/FSHelsinki_part3)
+- [Phonebook, continue](https://github.com/SonTrungTo/FSHelsinki_part3) All 22 exercises are about the phonebook back end
+from the previous part, including its deployment to Heroku and its use of MongoDB (noSQL database).
 
 ## [Part 2](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part2)
 - [Countries](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part2/countries) Countries displaying basic infos
