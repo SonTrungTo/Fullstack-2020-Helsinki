@@ -29,6 +29,21 @@ export default function App() {
     const handleChangeFilter = (event) => {
         setNameFilter(event.target.value);
     };
+    const displayErrorMessage = (error) => {
+        let message = error.response.data.error;
+        setMessage(message);
+        setTimeout(() => {
+            setMessage(null);
+        }, 5000);
+    };
+    const displaySuccessMessage = (message) => {
+        setMessage(message);
+        setIsSuccess(true);
+        setTimeout(() => {
+            setMessage(null);
+            setIsSuccess(false);
+        }, 5000);
+    };
     const clickSubmit = (event) => {
         event.preventDefault();
         if (persons.map(person => person.name).indexOf(newName.trim()) !== -1) {
@@ -42,19 +57,10 @@ export default function App() {
                     setPersons(persons.map(p => p.id !== person.id ? p : updatedP));
                     setNewName('');
                     setNewNumber('');
-                    setMessage(`Updated ${updatedP.name}`);
-                    setIsSuccess(true);
-                    setTimeout(() => {
-                        setMessage(null);
-                        setIsSuccess(false);
-                    }, 5000);
+                    displaySuccessMessage(`Updated ${updatedP.name}`);
                 })
                 .catch(error => {
-                    setMessage(`Information of ${person.name} has been removed from the server.`);
-                    setTimeout(() => {
-                        setMessage(null);
-                    }, 5000);
-                    setPersons(persons.filter(p => p.id !== person.id));
+                    displayErrorMessage(error);
                 });
             }
             return;
@@ -65,12 +71,10 @@ export default function App() {
             setPersons(persons.concat(returnedPerson));
             setNewName('');
             setNewNumber('');
-            setMessage(`Added ${returnedPerson.name}`);
-            setIsSuccess(true);
-            setTimeout(() => {
-                setMessage(null);
-                setIsSuccess(false);
-            }, 5000);
+            displaySuccessMessage(`Added ${returnedPerson.name}`);
+        })
+        .catch(error => {
+            displayErrorMessage(error);
         });
     };
     const clickDelete = requestedPerson => event => {
@@ -81,12 +85,10 @@ export default function App() {
                 // This is one of the weird stuffs of Axios, why response.data is an empty Object?
                 const newPersons = persons.filter(person => person.id !== requestedPerson.id);
                 setPersons(newPersons);
-                setMessage(`Deleted ${requestedPerson.name}`);
-                setIsSuccess(true);
-                setTimeout(() => {
-                    setMessage(null);
-                    setIsSuccess(false);
-                }, 5000);
+                displaySuccessMessage(`Deleted ${requestedPerson.name}`);
+            })
+            .catch(error => {
+                displayErrorMessage(error);
             });
         }
     };
