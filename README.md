@@ -1,4 +1,8 @@
-# [Full stack Open 2020](https://fullstackopen.com/en)
+# [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
+
+## [Part 4](https://github.com/SonTrungTo/Helsinki_part4)
+- [Bloglist](https://github.com/SonTrungTo/Helsinki_part4) All 22 exercises are about testing with Jest, Supertest
+and JSONWebToken, along with code refactors.
 
 ## [Part 3](https://github.com/SonTrungTo/FSHelsinki_part3)
 - [Phonebook, continue](https://github.com/SonTrungTo/FSHelsinki_part3) All 22 exercises are about the phonebook back end
