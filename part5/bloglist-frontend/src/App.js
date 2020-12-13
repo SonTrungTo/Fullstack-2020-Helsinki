@@ -16,10 +16,22 @@ const App = () => {
     );
   }, []);
 
+  useEffect(() => {
+    const loggedInUserJSON = window.localStorage.getItem('auth');
+    if (loggedInUserJSON) {
+      const userData = JSON.parse(loggedInUserJSON);
+      setUser(userData);
+    }
+  }, []);
+
   const blogsContent = () => (
     <div>
       <h2>blogs</h2>
-      { user && <p>{user.name} logged in</p> }
+      { user &&
+      <p>
+        {user.name} logged in <button onClick={ handleLogout }>logout</button>
+      </p>
+      }
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
@@ -58,15 +70,21 @@ const App = () => {
       const user = await loginService.login({
         username, password
       });
+      window.localStorage.setItem('auth', JSON.stringify(user));
       setUser(user);
       setUsername('');
       setPassword('');
     } catch (exception) {
-      setErrorMessage(`${exception}`);
+      setErrorMessage(`Wrong username/password`);
       setTimeout(() => {
         setErrorMessage('');
       }, 5000);
     }
+  };
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('auth');
+    setUser(null);
   };
 
   return (
