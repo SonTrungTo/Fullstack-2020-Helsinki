@@ -25,3 +25,8 @@
 #create-blog-form h2 {
   margin-bottom: 30px;
 }
+
+#blogContent {
+  margin: 25px auto;
+  border: 2px solid black;
+}
