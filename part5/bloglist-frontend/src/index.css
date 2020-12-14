@@ -17,3 +17,11 @@
     padding: 10px;
     margin-bottom: 10px;
 }
+
+#create-blog-form {
+  margin: 50px auto;
+}
+
+#create-blog-form h2 {
+  margin-bottom: 30px;
+}
