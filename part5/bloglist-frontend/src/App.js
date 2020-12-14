@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -24,8 +26,25 @@ const App = () => {
     if (loggedInUserJSON) {
       const userData = JSON.parse(loggedInUserJSON);
       setUser(userData);
+      blogService.setToken(userData.token);
     }
   }, []);
+
+  const displayErrorMessage = message => {
+    setMessage(message);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  };
+
+  const displaySuccessMessage = message => {
+    setIsSuccess(true);
+    setMessage(message);
+    setTimeout(() => {
+      setMessage(null);
+      setIsSuccess(false);
+    }, 5000);
+  };
 
   const blogsContent = () => (
     <div>
@@ -108,17 +127,16 @@ const App = () => {
       setUser(user);
       setUsername('');
       setPassword('');
+      displaySuccessMessage(`${user.name} logged in!`);
     } catch (exception) {
-      setErrorMessage(`Wrong username/password`);
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 5000);
+      displayErrorMessage('Wrong username/password');
     }
   };
 
   const handleLogout = () => {
     window.localStorage.removeItem('auth');
     setUser(null);
+    displaySuccessMessage('Logged out!');
   };
 
   const handleAdd = async event => {
@@ -132,17 +150,15 @@ const App = () => {
       setTitle('');
       setAuthor('');
       setUrl('');
+      displaySuccessMessage(`a new blog ${blog.title} by ${blog.author} added`);
     } catch (error) {
-      setErrorMessage(`${error.response.data.error}`);
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 5000);
+      displayErrorMessage(error.response.data.error);
     }
   };
 
   return (
     <React.Fragment>
-      { errorMessage && <p>{errorMessage}</p> }
+      <Notification message={ message } isSuccess={ isSuccess } />
       { user === null ? loginForm() : blogsContent() }
     </React.Fragment>
   );
