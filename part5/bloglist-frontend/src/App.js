@@ -6,6 +6,7 @@ import LoginForm from "./components/LoginForm";
 import Blog from "./components/Blog";
 import CreateBlogForm from "./components/CreateBlogForm";
 import Togglable from "./components/Togglable";
+import _ from "lodash";
 
 
 const App = () => {
@@ -17,9 +18,10 @@ const App = () => {
   const createBlogFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    );
+    blogService.getAll().then(blogs => {
+      const sortedBlogs = _.orderBy(blogs, 'likes', 'desc');
+      setBlogs( sortedBlogs );
+    });
   }, []);
 
   useEffect(() => {
@@ -65,7 +67,9 @@ const App = () => {
   const addLikes = async (id, originalLikes) => {
     try {
       const updatedBlog = await blogService.like(id, {likes: originalLikes + 1});
-      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog));
+      const updatedBlogs = blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog);
+      const sortedBlogs = _.orderBy(updatedBlogs, 'likes', 'desc');
+      setBlogs(sortedBlogs);
     } catch (error) {
       displayErrorMessage(error.response.data.error);
     }
