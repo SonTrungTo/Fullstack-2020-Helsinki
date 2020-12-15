@@ -11,9 +11,10 @@ describe('<Blog />', () => {
         author: 'Son To',
         url: 'random url'
     };
+    const mockHandler = jest.fn();
 
     beforeEach(() => {
-        component = render( <Blog blog={blog} />);
+        component = render( <Blog blog={blog} addLikes={mockHandler} />);
     });
 
     test('render its component', () => {
@@ -38,5 +39,13 @@ describe('<Blog />', () => {
 
         const div = component.container.querySelector('.hiddenInfo');
         expect(div).not.toHaveStyle('display: none');
+    });
+
+    test('when the like button is pressed twice, handler is called twice', () => {
+        const button = component.getByText('like');
+        fireEvent.click(button);
+        fireEvent.click(button);
+
+        expect(mockHandler.mock.calls).toHaveLength(2);
     });
 });
