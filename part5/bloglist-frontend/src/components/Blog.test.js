@@ -31,4 +31,12 @@ describe('<Blog />', () => {
         const div = component.container.querySelector('.hiddenInfo');
         expect(div).toHaveStyle('display: none');
     });
+
+    test('show likes and url when button is clicked', () => {
+        const button = component.getByText('show');
+        fireEvent.click(button);
+
+        const div = component.container.querySelector('.hiddenInfo');
+        expect(div).not.toHaveStyle('display: none');
+    });
 });
