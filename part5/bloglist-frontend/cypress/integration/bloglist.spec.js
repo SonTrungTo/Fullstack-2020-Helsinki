@@ -38,4 +38,25 @@ describe('Bloglist app', function() {
               .and('contain', 'Wrong username/password');
         });
     });
+
+    describe('When user logged in', function () {
+        beforeEach(function () {
+            cy.login({ username: 'tos1', password: 'darkness' });
+        });
+
+        it('a blog can be created', function () {
+            cy.contains('create new blog').click();
+            cy.get('#title').type('Wake the fuck up, Samurai! We got a city to burn!');
+            cy.get('#author').type('Keanu Reeves');
+            cy.get('#url').type('https://cyperpunk2077.com');
+            cy.get('#createButton').click();
+
+            cy.get('#notification').should('have.class', 'success')
+              .and('have.css', 'color', 'rgb(0, 128, 0)')
+              .and('contain', 'a new blog Wake the fuck up, Samurai! We got a city to burn! by Keanu Reeves added');
+            
+            cy.get('#blogList')
+              .should('contain', 'Wake the fuck up, Samurai! We got a city to burn! Keanu Reeves');
+        });
+    });
 });
