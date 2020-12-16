@@ -1,6 +1,11 @@
 # [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
 
-## Part 5 incoming...........
+## Part 6 incoming............
+
+## [Part 5](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part5/bloglist-frontend)
+- [Bloglist, continue](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part5/bloglist-frontend)
+Bloglist frontend, focusing on interaction with backend in the previous part and its testings: unit test with Jest/@testing-library
+and E2E test with Cypress, plus ESlint with React.
 
 ## [Part 4](https://github.com/SonTrungTo/Helsinki_part4)
 - [Bloglist](https://github.com/SonTrungTo/Helsinki_part4) All 22 exercises are about testing with Jest, Supertest
