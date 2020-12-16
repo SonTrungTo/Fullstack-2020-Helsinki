@@ -58,5 +58,21 @@ describe('Bloglist app', function() {
             cy.get('#blogList')
               .should('contain', 'Wake the fuck up, Samurai! We got a city to burn! Keanu Reeves');
         });
+
+        describe('When additional blogs are created', function () {
+           beforeEach(function () {
+               cy.createBlog({ title: 'Blog1', url: 'url1' });
+               cy.createBlog({ title: 'Blog2', url: 'url2' });
+               cy.createBlog({ title: 'Blog3', url: 'url3' });
+           });
+
+           it('a user can like a blog', function () {
+               cy.contains('Blog1').as('Blog1');
+               cy.get('@Blog1').contains('show').click();
+               cy.get('@Blog1').contains('likes 0');
+               cy.get('@Blog1').get('#likeButton').click();
+               cy.get('@Blog1').contains('likes 1');
+           });
+        });
     });
 });
