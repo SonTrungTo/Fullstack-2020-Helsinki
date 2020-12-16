@@ -23,6 +23,7 @@ export default function LoginForm({
                     <input
                         type='text'
                         name='username'
+                        id='username'
                         value={username}
                         onChange={({ target }) => setUsername(target.value)} />
                 </div>
@@ -31,10 +32,11 @@ export default function LoginForm({
                     <input
                         type='password'
                         name='password'
+                        id='password'
                         value={password}
                         onChange={({ target }) => setPassword(target.value)} />
                 </div>
-                <button type='submit'>login</button>
+                <button type='submit' id='submit'>login</button>
             </form>
         </div>
     );

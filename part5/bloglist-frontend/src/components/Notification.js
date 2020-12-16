@@ -7,7 +7,7 @@ export default function Notification({ message, isSuccess }) {
     }
 
     return (
-        <p className={ classState }>
+        <p className={ classState } id='notification'>
             {message}
         </p>
     );
