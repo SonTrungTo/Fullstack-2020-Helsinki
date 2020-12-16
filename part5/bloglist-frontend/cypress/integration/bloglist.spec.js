@@ -1,12 +1,18 @@
 describe('Bloglist app', function() {
     beforeEach(function() {
         cy.request('POST', 'http://localhost:3003/api/testing/reset');
-        const user = {
+        const user1 = {
             username: 'tos1',
             name: 'Son To',
             password: 'darkness'
         };
-        cy.request('POST', 'http://localhost:3003/api/users', user);
+        const user2 = {
+            username: 'samurai',
+            name: 'Jin Sakai',
+            password: 'kickass'
+        };
+        cy.request('POST', 'http://localhost:3003/api/users', user1);
+        cy.request('POST', 'http://localhost:3003/api/users', user2);
         cy.visit('http://localhost:3000');
     });
 
@@ -72,6 +78,24 @@ describe('Bloglist app', function() {
                cy.get('@Blog1').contains('likes 0');
                cy.get('@Blog1').get('#likeButton').click();
                cy.get('@Blog1').contains('likes 1');
+           });
+
+           it('a user can delete his blog', function () {
+              cy.contains('Blog1').as('Blog1');
+              cy.get('@Blog1').contains('show').click();
+              cy.get('@Blog1').contains('remove').click();
+              cy.get('#blogList').should('not.contain', 'Blog1');
+
+              cy.get('#notification').should('have.class', 'success')
+                .and('have.css', 'color', 'rgb(0, 128, 0)')
+                .and('contain', 'Blog1 by undefined removed');
+           });
+
+           it('another user cannot delete his blog', function () {
+              cy.login({ username: 'samurai', password: 'kickass' });
+              cy.contains('Blog1').as('Blog1');
+              cy.get('@Blog1').contains('show').click();
+              cy.get('@Blog1').should('not.contain', 'remove');
            });
         });
     });
