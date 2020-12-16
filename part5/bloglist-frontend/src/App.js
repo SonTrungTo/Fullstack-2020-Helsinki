@@ -57,8 +57,7 @@ const App = () => {
         try {
             const blog = await blogService.create(newObject);
             createBlogFormRef.current.toggleVisibility();
-            const sortedBlogs = _.orderBy(blogs.concat(blog), 'likes', 'desc');
-            setBlogs(sortedBlogs);
+            setBlogs(blogs.concat(blog));
             displaySuccessMessage(`a new blog ${blog.title} by ${blog.author} added`);
         } catch (error) {
             displayErrorMessage(error.response.data.error);
@@ -69,8 +68,7 @@ const App = () => {
         try {
             const updatedBlog = await blogService.like(id, { likes: originalLikes + 1 });
             const updatedBlogs = blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog);
-            const sortedBlogs = _.orderBy(updatedBlogs, 'likes', 'desc');
-            setBlogs(sortedBlogs);
+            setBlogs(updatedBlogs);
         } catch (error) {
             displayErrorMessage(error.response.data.error);
         }

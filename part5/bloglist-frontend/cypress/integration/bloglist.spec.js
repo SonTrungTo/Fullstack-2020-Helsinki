@@ -97,6 +97,27 @@ describe('Bloglist app', function() {
               cy.get('@Blog1').contains('show').click();
               cy.get('@Blog1').should('not.contain', 'remove');
            });
+
+           it('likes are sorted in descending order', function () {
+               cy.get('.blogContent').then(blogs => {
+                    cy.wrap(blogs[0]).contains('show').click();
+                    cy.wrap(blogs[1]).contains('show').click();
+                    cy.wrap(blogs[2]).contains('show').click();
+
+                    cy.wrap(blogs[0]).contains('like').click();
+                    cy.wrap(blogs[1]).contains('like').click();
+                    cy.wrap(blogs[1]).contains('like').click();
+                    cy.wrap(blogs[1]).contains('like').click();
+                    cy.wrap(blogs[2]).contains('like').click();
+                    cy.wrap(blogs[2]).contains('like').click();
+               });
+               cy.visit('http://localhost:3000');
+               cy.get('.blogContent').then(blogs => {
+                    cy.wrap(blogs[0]).should('contain', 'Blog2');
+                    cy.wrap(blogs[1]).should('contain', 'Blog3');
+                    cy.wrap(blogs[2]).should('contain', 'Blog1');
+               });
+           });
         });
     });
 });
