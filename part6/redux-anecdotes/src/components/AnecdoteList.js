@@ -6,6 +6,9 @@ import _ from 'lodash';
 
 const AnecdoteList = () => {
     const anecdotes = useSelector(state => _.orderBy(state.anecdotes, 'votes', 'desc'));
+    const filter = useSelector(state => state.filter);
+    const filteredAnecdotes = filter.length === 0 ? anecdotes :
+        anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()));
     const dispatch = useDispatch();
 
     const vote = (anecdote) => {
@@ -19,7 +22,7 @@ const AnecdoteList = () => {
 
     return (
         <div>
-            {anecdotes.map(anecdote =>
+            {filteredAnecdotes.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
