@@ -13,7 +13,7 @@ const AnecdoteList = () => {
 
     const vote = (anecdote) => {
         console.log('vote', anecdote.id);
-        dispatch(upvote(anecdote.id));
+        dispatch(upvote(anecdote.id, anecdote));
         dispatch(upvoteMessage(anecdote));
         setTimeout(() => {
             dispatch(removeMessage());
