@@ -2,6 +2,7 @@ const initialState = {
     message: 'This app information is controlled by a store named Redux',
     display: true
 };
+let timer;
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -24,11 +25,12 @@ const reducer = (state = initialState, action) => {
 
 export const setNotification = (message, timeInSecond) => {
     return dispatch => {
+        clearTimeout(timer);
         dispatch({
             type: 'SET_MESSAGE',
             data: message
         });
-        setTimeout(() => {
+        timer = setTimeout(() => {
             dispatch({
                 type: 'REMOVE_MESSAGE'
             });
