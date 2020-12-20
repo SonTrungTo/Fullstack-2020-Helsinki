@@ -1,6 +1,12 @@
 # [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
 
-## Part 6 incoming............
+## [Part 6](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
+- [Unicafe, continue](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
+- [Anecdotes, done](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
+<br />
+Both parts of these exercises contribute to the learning model of the Flux-architecture, namely Redux,
+along with connect and hook api from react-redux, logic abstract from redux-thunk and
+createStore along with devtools and applyMiddleware from redux. Presentation vs Container components.
 
 ## [Part 5](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part5/bloglist-frontend)
 - [Bloglist, continue](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part5/bloglist-frontend)
