@@ -5,16 +5,10 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-    case 'VOTE_MESSAGE': {
+    case 'SET_MESSAGE': {
         return {
             display: true,
-            message: `You voted '${action.data.content}'`
-        };
-    }
-    case 'NEW_ANECDOTE_MESSAGE': {
-        return {
-            display: true,
-            message: `'${action.data.content}' is created`
+            message: action.data
         };
     }
     case 'REMOVE_MESSAGE': {
@@ -28,27 +22,17 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-export const upvoteMessage = ({ content }) => {
-    return {
-        type: 'VOTE_MESSAGE',
-        data: {
-            content
-        }
-    };
-};
-
-export const newAnecdoteMessage = (content) => {
-    return {
-        type: 'NEW_ANECDOTE_MESSAGE',
-        data: {
-            content
-        }
-    };
-};
-
-export const removeMessage = () => {
-    return {
-        type: 'REMOVE_MESSAGE'
+export const setNotification = (message, timeInSecond) => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_MESSAGE',
+            data: message
+        });
+        setTimeout(() => {
+            dispatch({
+                type: 'REMOVE_MESSAGE'
+            });
+        }, timeInSecond * 1000);
     };
 };
 

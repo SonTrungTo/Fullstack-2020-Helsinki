@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { upvote } from '../reducers/anecdoteReducer';
-import { upvoteMessage, removeMessage } from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer';
 import _ from 'lodash';
 
 const AnecdoteList = () => {
@@ -14,10 +14,7 @@ const AnecdoteList = () => {
     const vote = (anecdote) => {
         console.log('vote', anecdote.id);
         dispatch(upvote(anecdote.id, anecdote));
-        dispatch(upvoteMessage(anecdote));
-        setTimeout(() => {
-            dispatch(removeMessage());
-        }, 5000);
+        dispatch(setNotification(`You voted '${anecdote.content}'`, 5));
     };
 
     return (
