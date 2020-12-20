@@ -1,4 +1,4 @@
-# [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
+# [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises) [Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/73e0362267388c3329588af78459661d)
 
 ## [Part 6](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
 - [Unicafe, continue](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
