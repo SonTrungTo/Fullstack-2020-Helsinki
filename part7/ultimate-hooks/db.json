@@ -7,6 +7,10 @@
     {
       "content": "paras feature ikinä <3",
       "id": 2
+    },
+    {
+      "content": "I am a sad man",
+      "id": 3
     }
   ],
   "persons": [
@@ -14,6 +18,31 @@
       "name": "mluukkai",
       "number": "040-5483923",
       "id": 1
+    },
+    {
+      "name": "Son To",
+      "number": "040369974",
+      "id": 2
+    },
+    {
+      "name": "Son To",
+      "number": "040369974",
+      "id": 3
+    },
+    {
+      "name": "Jackie Chan",
+      "number": "12354-1234134",
+      "id": 4
+    },
+    {
+      "name": "Jim Carrey",
+      "number": "123-32524-13412",
+      "id": 5
+    },
+    {
+      "name": "Michael I Jordan",
+      "number": "0234r571231",
+      "id": 6
     }
   ]
 }
