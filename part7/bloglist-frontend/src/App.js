@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { displaySuccessMessage, displayErrorMessage } from './reducers/notificationReducer';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
@@ -12,8 +14,9 @@ import _ from 'lodash';
 const App = () => {
     const [blogs, setBlogs] = useState([]);
     const [user, setUser] = useState(null);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [message, setMessage] = useState(null);
+    const message = useSelector(state => state.notification.message);
+    const isSuccess = useSelector(state => state.notification.isSuccess);
+    const dispatch = useDispatch();
 
     const createBlogFormRef = useRef();
 
@@ -41,16 +44,16 @@ const App = () => {
             window.localStorage.setItem('auth', JSON.stringify(user));
             blogService.setToken(user.token);
             setUser(user);
-            displaySuccessMessage(`${user.name} logged in!`);
+            dispatch(displaySuccessMessage(`${user.name} logged in!`, 5));
         } catch (error) {
-            displayErrorMessage('Wrong username/password');
+            dispatch(displayErrorMessage('Wrong username/password', 5));
         }
     };
 
     const handleLogout = () => {
         window.localStorage.removeItem('auth');
         setUser(null);
-        displaySuccessMessage('Logged out!');
+        dispatch(displaySuccessMessage('Logged out!', 5));
     };
 
     const createNewBlog = async newObject => {
@@ -58,9 +61,9 @@ const App = () => {
             const blog = await blogService.create(newObject);
             createBlogFormRef.current.toggleVisibility();
             setBlogs(blogs.concat(blog));
-            displaySuccessMessage(`a new blog ${blog.title} by ${blog.author} added`);
+            dispatch(displaySuccessMessage(`a new blog ${blog.title} by ${blog.author} added`, 5));
         } catch (error) {
-            displayErrorMessage(error.response.data.error);
+            dispatch(displayErrorMessage(error.response.data.error, 5));
         }
     };
 
@@ -70,7 +73,7 @@ const App = () => {
             const updatedBlogs = blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog);
             setBlogs(updatedBlogs);
         } catch (error) {
-            displayErrorMessage(error.response.data.error);
+            dispatch(displayErrorMessage(error.response.data.error, 5));
         }
     };
 
@@ -78,9 +81,9 @@ const App = () => {
         try {
             await blogService.removeBlog(id);
             setBlogs(blogs.filter(blog => blog.id !== id));
-            displaySuccessMessage(`${blog.title} by ${blog.author} removed!`);
+            dispatch(displaySuccessMessage(`${blog.title} by ${blog.author} removed!`, 5));
         } catch (error) {
-            displayErrorMessage(error.response.data.error);
+            dispatch(displayErrorMessage(error.response.data.error, 5));
         }
     };
 
@@ -103,22 +106,6 @@ const App = () => {
             </div>
         </div>
     );
-
-    const displayErrorMessage = message => {
-        setMessage(message);
-        setTimeout(() => {
-            setMessage(null);
-        }, 5000);
-    };
-
-    const displaySuccessMessage = message => {
-        setIsSuccess(true);
-        setMessage(message);
-        setTimeout(() => {
-            setMessage(null);
-            setIsSuccess(false);
-        }, 5000);
-    };
 
     return (
         <React.Fragment>
