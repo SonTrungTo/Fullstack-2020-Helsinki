@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { displaySuccessMessage, displayErrorMessage } from './reducers/notificationReducer';
+import { createBlog, initializeBlogs,
+    likeBlog, deleteBlog } from './reducers/blogsReducer';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
@@ -12,19 +14,17 @@ import _ from 'lodash';
 
 
 const App = () => {
-    const [blogs, setBlogs] = useState([]);
     const [user, setUser] = useState(null);
     const message = useSelector(state => state.notification.message);
     const isSuccess = useSelector(state => state.notification.isSuccess);
+    const blogs = useSelector(state => _.orderBy(state.blogs, 'likes', 'desc'));
     const dispatch = useDispatch();
 
     const createBlogFormRef = useRef();
 
     useEffect(() => {
-        blogService.getAll().then(blogs => {
-            const sortedBlogs = _.orderBy(blogs, 'likes', 'desc');
-            setBlogs( sortedBlogs );
-        });
+        dispatch(initializeBlogs());
+    // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
@@ -58,10 +58,9 @@ const App = () => {
 
     const createNewBlog = async newObject => {
         try {
-            const blog = await blogService.create(newObject);
             createBlogFormRef.current.toggleVisibility();
-            setBlogs(blogs.concat(blog));
-            dispatch(displaySuccessMessage(`a new blog ${blog.title} by ${blog.author} added`, 5));
+            dispatch(createBlog(newObject));
+            dispatch(displaySuccessMessage(`a new blog ${newObject.title} by ${newObject.author} added`, 5));
         } catch (error) {
             dispatch(displayErrorMessage(error.response.data.error, 5));
         }
@@ -69,9 +68,7 @@ const App = () => {
 
     const addLikes = async (id, originalLikes) => {
         try {
-            const updatedBlog = await blogService.like(id, { likes: originalLikes + 1 });
-            const updatedBlogs = blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog);
-            setBlogs(updatedBlogs);
+            dispatch(likeBlog(id, { likes: originalLikes + 1 }));
         } catch (error) {
             dispatch(displayErrorMessage(error.response.data.error, 5));
         }
@@ -79,8 +76,7 @@ const App = () => {
 
     const removeBlog = async (id, blog) => {
         try {
-            await blogService.removeBlog(id);
-            setBlogs(blogs.filter(blog => blog.id !== id));
+            dispatch(deleteBlog(id));
             dispatch(displaySuccessMessage(`${blog.title} by ${blog.author} removed!`, 5));
         } catch (error) {
             dispatch(displayErrorMessage(error.response.data.error, 5));
