@@ -1,0 +1,33 @@
+.success {
+    color: green;
+    background-color: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+.error {
+    color:red;
+    background-color: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#create-blog-form {
+  margin: 50px auto;
+}
+
+#create-blog-form h2 {
+  margin-bottom: 30px;
+}
+
+#blogContent {
+  margin: 25px auto;
+  border: 2px solid black;
+  padding: 20px;
+}
