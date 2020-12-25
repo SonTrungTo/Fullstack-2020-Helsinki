@@ -1,8 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { addComment } from '../reducers/blogsReducer';
+import { useDispatch } from 'react-redux';
 
 const BlogView = ({ blog, addLikes, removeBlog, user }) => {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const handleLikes = (id, originalLikes) => event => {
         addLikes(id, originalLikes);
@@ -14,6 +17,14 @@ const BlogView = ({ blog, addLikes, removeBlog, user }) => {
             removeBlog(id, blog);
             history.push('/blogs');
         }
+    };
+
+    const handleAddComment = event => {
+        event.preventDefault();
+
+        const comment = event.target.comment.value;
+        event.target.comment.value = '';
+        dispatch(addComment(blog.id, { comment }));
     };
 
     if (!blog) {
@@ -40,6 +51,18 @@ const BlogView = ({ blog, addLikes, removeBlog, user }) => {
                 id='deleteButton'>
             remove
             </button> }
+            <h4>comments</h4>
+            <form onSubmit={ handleAddComment }>
+                <input name='comment' type='text' />
+                <button type='submit'>add comment</button>
+            </form>
+            <ul>
+                { blog.comments.map(({ comment, _id }) =>
+                    <li key={ _id.toString() }>
+                        { comment }
+                    </li>
+                ) }
+            </ul>
         </div>
     );
 };

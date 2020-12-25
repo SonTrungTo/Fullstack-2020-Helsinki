@@ -24,6 +24,16 @@ const blogsReducer = (state = [], action) => {
         const targetBlogId = action.data;
         return state.filter(blog => blog.id !== targetBlogId);
     }
+    case 'ADD_COMMENT': {
+        const targetBlogId = action.data.id;
+        const targetBlog = state.find(blog => blog.id === targetBlogId);
+        const updatedBlog = {
+            ...targetBlog,
+            comments: targetBlog.comments.concat(action.data.comment)
+        };
+        return state.map(blog => blog.id === targetBlogId ?
+            updatedBlog : blog);
+    }
     default:
         return state;
     }
@@ -61,6 +71,23 @@ export const likeBlog = (id, newObject) => {
             dispatch({
                 type: 'LIKE_BLOG',
                 data: id
+            });
+        } catch (error) {
+            dispatch(displayErrorMessage(error.response.data.error, 5));
+        }
+    };
+};
+
+export const addComment = (id, { comment }) => {
+    return async dispatch => {
+        try {
+            const newComment = await blogsService.addComment(id, { comment });
+            dispatch({
+                type: 'ADD_COMMENT',
+                data: {
+                    id,
+                    comment: newComment
+                }
             });
         } catch (error) {
             dispatch(displayErrorMessage(error.response.data.error, 5));

@@ -40,4 +40,16 @@ const removeBlog = async (id) => {
     return response.data;
 };
 
-export default { getAll, setToken, create, like, removeBlog };
+const addComment = async (id, newObject) => {
+    const config = {
+        headers: {
+            Authorization: token
+        }
+    };
+
+    const response = await axios.post(`${baseUrl}/${id}/comments`, newObject, config);
+    return response.data;
+};
+
+export default { getAll, setToken, create, like, removeBlog,
+    addComment };
