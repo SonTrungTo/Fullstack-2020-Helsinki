@@ -1,4 +1,6 @@
 import blogsService from '../services/blogs';
+import { displaySuccessMessage,
+    displayErrorMessage } from './notificationReducer';
 
 const blogsReducer = (state = [], action) => {
     switch (action.type) {
@@ -29,11 +31,16 @@ const blogsReducer = (state = [], action) => {
 
 export const createBlog = (newObject) => {
     return async dispatch => {
-        const blog = await blogsService.create(newObject);
-        dispatch({
-            type: 'CREATE_BLOG',
-            data: blog
-        });
+        try {
+            const blog = await blogsService.create(newObject);
+            dispatch({
+                type: 'CREATE_BLOG',
+                data: blog
+            });
+            dispatch(displaySuccessMessage(`a new blog ${blog.title} by ${blog.author} added`, 5));
+        } catch (error) {
+            dispatch(displayErrorMessage(error.response.data.error, 5));
+        }
     };
 };
 
@@ -49,21 +56,30 @@ export const initializeBlogs = () => {
 
 export const likeBlog = (id, newObject) => {
     return async dispatch => {
-        await blogsService.like(id, newObject);
-        dispatch({
-            type: 'LIKE_BLOG',
-            data: id
-        });
+        try {
+            await blogsService.like(id, newObject);
+            dispatch({
+                type: 'LIKE_BLOG',
+                data: id
+            });
+        } catch (error) {
+            dispatch(displayErrorMessage(error.response.data.error, 5));
+        }
     };
 };
 
-export const deleteBlog = (id) => {
+export const deleteBlog = (id, blog) => {
     return async dispatch => {
-        await blogsService.removeBlog(id);
-        dispatch({
-            type: 'DELETE_BLOG',
-            data: id
-        });
+        try {
+            await blogsService.removeBlog(id);
+            dispatch({
+                type: 'DELETE_BLOG',
+                data: id
+            });
+            dispatch(displaySuccessMessage(`${blog.title} by ${blog.author} removed!`, 5));
+        } catch (error) {
+            dispatch(displayErrorMessage(error.response.data.error, 5));
+        }
     };
 };
 

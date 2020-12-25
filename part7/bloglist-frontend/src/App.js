@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { displaySuccessMessage, displayErrorMessage } from './reducers/notificationReducer';
 import { createBlog, initializeBlogs,
     likeBlog, deleteBlog } from './reducers/blogsReducer';
-import blogService from './services/blogs';
-import loginService from './services/login';
+import { initializeUser, login, logout } from './reducers/authReducer';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog';
@@ -14,7 +12,7 @@ import _ from 'lodash';
 
 
 const App = () => {
-    const [user, setUser] = useState(null);
+    const user = useSelector(state => state.userData);
     const message = useSelector(state => state.notification.message);
     const isSuccess = useSelector(state => state.notification.isSuccess);
     const blogs = useSelector(state => _.orderBy(state.blogs, 'likes', 'desc'));
@@ -28,59 +26,29 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        const loggedInUserJSON = window.localStorage.getItem('auth');
-        if (loggedInUserJSON) {
-            const userData = JSON.parse(loggedInUserJSON);
-            setUser(userData);
-            blogService.setToken(userData.token);
-        }
+        dispatch(initializeUser());
+    // eslint-disable-next-line
     }, []);
 
-    const loginUser = async ({ username, password }) => {
-        try {
-            const user = await loginService.login({
-                username, password
-            });
-            window.localStorage.setItem('auth', JSON.stringify(user));
-            blogService.setToken(user.token);
-            setUser(user);
-            dispatch(displaySuccessMessage(`${user.name} logged in!`, 5));
-        } catch (error) {
-            dispatch(displayErrorMessage('Wrong username/password', 5));
-        }
+    const loginUser = ({ username, password }) => {
+        dispatch(login({ username, password }));
     };
 
     const handleLogout = () => {
-        window.localStorage.removeItem('auth');
-        setUser(null);
-        dispatch(displaySuccessMessage('Logged out!', 5));
+        dispatch(logout());
     };
 
-    const createNewBlog = async newObject => {
-        try {
-            createBlogFormRef.current.toggleVisibility();
-            dispatch(createBlog(newObject));
-            dispatch(displaySuccessMessage(`a new blog ${newObject.title} by ${newObject.author} added`, 5));
-        } catch (error) {
-            dispatch(displayErrorMessage(error.response.data.error, 5));
-        }
+    const createNewBlog = newObject => {
+        createBlogFormRef.current.toggleVisibility();
+        dispatch(createBlog(newObject));
     };
 
-    const addLikes = async (id, originalLikes) => {
-        try {
-            dispatch(likeBlog(id, { likes: originalLikes + 1 }));
-        } catch (error) {
-            dispatch(displayErrorMessage(error.response.data.error, 5));
-        }
+    const addLikes = (id, originalLikes) => {
+        dispatch(likeBlog(id, { likes: originalLikes + 1 }));
     };
 
-    const removeBlog = async (id, blog) => {
-        try {
-            dispatch(deleteBlog(id));
-            dispatch(displaySuccessMessage(`${blog.title} by ${blog.author} removed!`, 5));
-        } catch (error) {
-            dispatch(displayErrorMessage(error.response.data.error, 5));
-        }
+    const removeBlog = (id, blog) => {
+        dispatch(deleteBlog(id, blog));
     };
 
     const blogContent = () => (
