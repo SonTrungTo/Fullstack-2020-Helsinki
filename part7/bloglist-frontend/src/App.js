@@ -5,7 +5,7 @@ import { createBlog, initializeBlogs,
 import { initializeUser, login, logout } from './reducers/authReducer';
 import { initializeUsers } from './reducers/usersReducer';
 import Users from './components/Users';
-import { Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog';
@@ -60,14 +60,22 @@ const App = () => {
         dispatch(deleteBlog(id, blog));
     };
 
-    const blogContent = () => (
+    const blogHeader = () => (
         <div>
             <h2>blogs</h2>
             { user &&
-            <p>
+            <div>
                 {user.name} logged in <button onClick={ handleLogout }>logout</button>
-            </p>
+                <div>
+                    <Link to='/users'>Users</Link>
+                </div>
+            </div>
             }
+        </div>
+    );
+
+    const blogContent = () => (
+        <div>
             <Togglable labelButton='create new blog' ref={ createBlogFormRef }>
                 <CreateBlogForm addBlog={createNewBlog} />
             </Togglable>
@@ -85,14 +93,18 @@ const App = () => {
             <Notification message={ message } isSuccess={ isSuccess } />
             { user === null ?
                 <LoginForm loginUser={ loginUser } /> :
-                <Switch>
-                    <Route path='/users'>
-                        <Users users={ users } />
-                    </Route>
-                    <Route path='/'>
-                        { blogContent() }
-                    </Route>
-                </Switch> }
+                <div>
+                    { blogHeader() }
+                    <Switch>
+                        <Route path='/users'>
+                            <Users users={ users } />
+                        </Route>
+                        <Route path='/'>
+                            { blogContent() }
+                        </Route>
+                    </Switch>
+                </div>
+            }
         </React.Fragment>
     );
 };
