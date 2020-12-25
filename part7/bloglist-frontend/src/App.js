@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createBlog, initializeBlogs,
     likeBlog, deleteBlog } from './reducers/blogsReducer';
 import { initializeUser, login, logout } from './reducers/authReducer';
+import { initializeUsers } from './reducers/usersReducer';
+import Users from './components/Users';
+import { Route, Switch } from 'react-router-dom';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog';
@@ -13,6 +16,7 @@ import _ from 'lodash';
 
 const App = () => {
     const user = useSelector(state => state.userData);
+    const users = useSelector(state => state.users);
     const message = useSelector(state => state.notification.message);
     const isSuccess = useSelector(state => state.notification.isSuccess);
     const blogs = useSelector(state => _.orderBy(state.blogs, 'likes', 'desc'));
@@ -27,6 +31,11 @@ const App = () => {
 
     useEffect(() => {
         dispatch(initializeUser());
+    // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        dispatch(initializeUsers());
     // eslint-disable-next-line
     }, []);
 
@@ -76,7 +85,14 @@ const App = () => {
             <Notification message={ message } isSuccess={ isSuccess } />
             { user === null ?
                 <LoginForm loginUser={ loginUser } /> :
-                blogContent() }
+                <Switch>
+                    <Route path='/users'>
+                        <Users users={ users } />
+                    </Route>
+                    <Route path='/'>
+                        { blogContent() }
+                    </Route>
+                </Switch> }
         </React.Fragment>
     );
 };
