@@ -5,7 +5,9 @@ import { createBlog, initializeBlogs,
 import { initializeUser, login, logout } from './reducers/authReducer';
 import { initializeUsers } from './reducers/usersReducer';
 import Users from './components/Users';
-import { Link, Route, Switch } from 'react-router-dom';
+import User from './components/User';
+import { Link, Route, Switch,
+    useRouteMatch } from 'react-router-dom';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog';
@@ -15,7 +17,7 @@ import _ from 'lodash';
 
 
 const App = () => {
-    const user = useSelector(state => state.userData);
+    const userData = useSelector(state => state.userData);
     const users = useSelector(state => state.users);
     const message = useSelector(state => state.notification.message);
     const isSuccess = useSelector(state => state.notification.isSuccess);
@@ -23,6 +25,10 @@ const App = () => {
     const dispatch = useDispatch();
 
     const createBlogFormRef = useRef();
+    const match = useRouteMatch('/users/:id');
+    const user = match ?
+        users.find(user => user.id === match.params.id)
+        : null;
 
     useEffect(() => {
         dispatch(initializeBlogs());
@@ -63,9 +69,9 @@ const App = () => {
     const blogHeader = () => (
         <div>
             <h2>blogs</h2>
-            { user &&
+            { userData &&
             <div>
-                {user.name} logged in <button onClick={ handleLogout }>logout</button>
+                {userData.name} logged in <button onClick={ handleLogout }>logout</button>
                 <div>
                     <Link to='/users'>Users</Link>
                 </div>
@@ -82,7 +88,7 @@ const App = () => {
             <div id='blogList'>
                 {blogs.map(blog =>
                     <Blog key={blog.id} blog={blog} addLikes={addLikes}
-                        user={user} removeBlog={removeBlog} />
+                        user={userData} removeBlog={removeBlog} />
                 )}
             </div>
         </div>
@@ -91,11 +97,14 @@ const App = () => {
     return (
         <React.Fragment>
             <Notification message={ message } isSuccess={ isSuccess } />
-            { user === null ?
+            { userData === null ?
                 <LoginForm loginUser={ loginUser } /> :
                 <div>
                     { blogHeader() }
                     <Switch>
+                        <Route path='/users/:id'>
+                            <User user={ user } />
+                        </Route>
                         <Route path='/users'>
                             <Users users={ users } />
                         </Route>
