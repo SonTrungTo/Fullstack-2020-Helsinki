@@ -11,6 +11,8 @@ import { Link, Route, Switch,
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Blog from './components/Blog';
+import Blogs from './components/Blogs';
+import BlogView from './components/BlogView';
 import CreateBlogForm from './components/CreateBlogForm';
 import Togglable from './components/Togglable';
 import _ from 'lodash';
@@ -26,8 +28,12 @@ const App = () => {
 
     const createBlogFormRef = useRef();
     const match = useRouteMatch('/users/:id');
+    const matchBlog = useRouteMatch('/blogs/:id');
     const user = match ?
         users.find(user => user.id === match.params.id)
+        : null;
+    const blog = matchBlog ?
+        blogs.find(blog => blog.id === matchBlog.params.id)
         : null;
 
     useEffect(() => {
@@ -68,15 +74,18 @@ const App = () => {
 
     const blogHeader = () => (
         <div>
-            <h2>blogs</h2>
             { userData &&
-            <div>
-                {userData.name} logged in <button onClick={ handleLogout }>logout</button>
-                <div>
-                    <Link to='/users'>Users</Link>
-                </div>
+            <div id='navBar'>
+                <Link to='/blogs' id='link'>Blogs</Link>
+                <Link to='/users' id='link'>Users</Link>
+                {userData.name} logged in
+                <button onClick={ handleLogout }
+                    style={{ marginLeft: '20px' }}>
+                        logout
+                </button>
             </div>
             }
+            <h2>blog app</h2>
         </div>
     );
 
@@ -104,6 +113,17 @@ const App = () => {
                     <Switch>
                         <Route path='/users/:id'>
                             <User user={ user } />
+                        </Route>
+                        <Route path='/blogs/:id'>
+                            <BlogView blog={ blog }
+                                addLikes={addLikes}
+                                removeBlog={removeBlog}
+                                user={userData} />
+                        </Route>
+                        <Route path='/blogs'>
+                            <Blogs blogs={ blogs }
+                                createNewBlog={ createNewBlog }
+                                createBlogFormRef={ createBlogFormRef } />
                         </Route>
                         <Route path='/users'>
                             <Users users={ users } />

@@ -31,3 +31,12 @@
   border: 2px solid black;
   padding: 20px;
 }
+
+#navBar {
+  background-color: gray;
+  margin: 5px 5px 5px 0px;
+}
+
+#link {
+  padding: 9px;
+}
