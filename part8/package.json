@@ -1,0 +1,10 @@
+{
+  "name": "graphql-exercises",
+  "version": "1.0.0",
+  "description": "Exercises for part 8 of FS2020Helsinki",
+  "main": "library-backend.js",
+  "repository": "https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part8",
+  "author": "Son To",
+  "license": "MIT",
+  "private": false
+}
