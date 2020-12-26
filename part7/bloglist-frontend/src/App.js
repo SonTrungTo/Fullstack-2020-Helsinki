@@ -16,6 +16,7 @@ import BlogView from './components/BlogView';
 import CreateBlogForm from './components/CreateBlogForm';
 import Togglable from './components/Togglable';
 import _ from 'lodash';
+import Container from '@material-ui/core/Container';
 
 
 const App = () => {
@@ -104,7 +105,7 @@ const App = () => {
     );
 
     return (
-        <React.Fragment>
+        <Container>
             <Notification message={ message } isSuccess={ isSuccess } />
             { userData === null ?
                 <LoginForm loginUser={ loginUser } /> :
@@ -134,7 +135,7 @@ const App = () => {
                     </Switch>
                 </div>
             }
-        </React.Fragment>
+        </Container>
     );
 };
 

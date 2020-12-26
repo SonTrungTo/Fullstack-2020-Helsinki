@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from '@material-ui/lab';
 
 export default function Notification({ message, isSuccess }) {
     const classState = isSuccess ? 'success' : 'error';
@@ -7,8 +8,8 @@ export default function Notification({ message, isSuccess }) {
     }
 
     return (
-        <p className={ classState } id='notification'>
+        <Alert severity={ classState }>
             {message}
-        </p>
+        </Alert>
     );
 }
