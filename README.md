@@ -1,4 +1,8 @@
-# [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises) [Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/73e0362267388c3329588af78459661d)
+# [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
+# [Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/73e0362267388c3329588af78459661d)
+
+## [Part 7](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part7)
+- 21 exercises are spent studying Webpack config, React-Router-Dom, Material-UI and React-bootstrap.
 
 ## [Part 6](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
 - [Unicafe, continue](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part6)
