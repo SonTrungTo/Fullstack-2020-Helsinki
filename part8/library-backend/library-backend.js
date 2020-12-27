@@ -153,8 +153,13 @@ const resolvers = {
     addBook: (root, args) => {
       if (books.find(book => book.title === args.title)) {
         throw new UserInputError('Book title must be unique', {
-          invalidArgs: args.name
+          invalidArgs: args.title
         });
+      }
+
+      if (!args.title || !args.published || !args.title
+        || args.genres.length === 0) {
+        return null;
       }
 
       const newBook = { ...args, id: uuid() };
