@@ -12,6 +12,10 @@
     "graphql": "^15.4.0"
   },
   "scripts": {
-    "start": "node library-backend.js"
+    "start": "node library-backend.js",
+    "dev": "nodemon library-backend.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
