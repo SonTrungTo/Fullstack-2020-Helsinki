@@ -1,11 +1,14 @@
-const { ApolloServer, gql, UserInputError } = require('apollo-server')
+const { ApolloServer, gql, UserInputError, AuthenticationError } = require('apollo-server')
 const mongoose = require('mongoose');
 const Book = require('./models/Book');
 const Author = require('./models/Author');
+const User = require('./models/User');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 // Now we connect the backend to MongoDB Atlas
 const MONGO_URI = process.env.MONGO_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 console.log('conneting to Mongo DB via', MONGO_URI);
 
@@ -121,11 +124,22 @@ const typeDefs = gql`
     genres: [String!]!
   }
 
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Query {
     booksCount: Int!
     authorsCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    me: User!
   }
 
   type Mutation {
@@ -139,6 +153,14 @@ const typeDefs = gql`
       name: String!,
       setBornTo: Int!
     ): Author
+    login(
+      username: String!
+      password: String!
+    ): Token
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
   }
 `
 
@@ -175,9 +197,13 @@ const resolvers = {
   },
 
   Mutation: {
-    addBook: async (root, args) => {
-      const books = await Book.findOne({ title: { $in: [args.title] } });
-      if (books) {
+    addBook: async (root, args, { currentUser }) => {
+      if (!currentUser) {
+        throw new AuthenticationError('User most login to add new book');
+      }
+
+      const availableBook = await Book.findOne({ title: { $in: [args.title] } });
+      if (availableBook) {
         throw new UserInputError('Book title must be unique', {
           invalidArgs: args.title
         });
@@ -188,7 +214,8 @@ const resolvers = {
         return null;
       }
 
-      const newAuthor = new Author({ name: args.author });
+      const author = await Author.findOne({ name: args.author });
+      const newAuthor = author ? author : new Author({ name: args.author });
       const newBook =  new Book({ ...args, author: newAuthor });
       try {
         await newBook.save();
@@ -200,7 +227,11 @@ const resolvers = {
       }
       return newBook;
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, { currentUser }) => {
+      if (!currentUser) {
+        throw new AuthenticationError('User must login to edit author');
+      }
+
       const targetAuthor = await Author.findOne({ name: { $in: [args.name] } });
       if (!targetAuthor) {
         return null;
@@ -215,6 +246,28 @@ const resolvers = {
         });
       }
       return targetAuthor;
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username });
+      if (!user || args.password !== 'ADA') {
+        throw new UserInputError('Invalid username/password');
+      }
+
+      const userData = {
+        username: user.name,
+        id: user._id.toString()
+      };
+
+      return { value: jwt.sign( userData, JWT_SECRET ) };
+    },
+    createUser: async (root, args) => {
+      const newUser = new User({ ...args });
+      return newUser.save()
+        .catch(error => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          });
+        });
     }
   }
 }
@@ -222,7 +275,19 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-})
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null;
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {
+      const token = auth.substring(7);
+      const decodedUser = jwt.verify( token , JWT_SECRET);
+      if (!decodedUser || !decodedUser.id) {
+        throw new AuthenticationError('User must login with approriate credentials');
+      }
+      const currentUser = await User.findById(decodedUser.id);
+      return { currentUser };
+    }
+  }
+});
 
 server.listen().then(({ url }) => {
   console.log(`Server ready at ${url}`)
