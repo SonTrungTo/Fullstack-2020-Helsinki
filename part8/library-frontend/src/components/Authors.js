@@ -4,14 +4,17 @@ import { useQuery, useMutation } from '@apollo/client';
 import { ALL_AUTHORS } from '../queries';
 import { EDIT_AUTHOR } from '../queries';
 
-const Authors = (props) => {
+const Authors = ({ setError, show }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [year, setYear] = useState('');
   const result = useQuery(ALL_AUTHORS);
   const [ setBirthYear ] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [ { query: ALL_AUTHORS } ]
+    refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: error => {
+      setError(error.graphQLErrors[0].message);
+    }
   });
-  if (!props.show) {
+  if (!show) {
     return null
   }
 

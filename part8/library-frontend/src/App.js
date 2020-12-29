@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -12,6 +12,13 @@ const App = () => {
   const [token, setToken] = useState(null);
   const client = useApolloClient();
   let time;
+
+  useEffect(() => {
+    const token = localStorage.getItem('auth');
+    if (token) {
+      setToken(token);
+    }
+  }, []);
 
   const notify = note => {
     clearTimeout(time);
@@ -45,6 +52,7 @@ const App = () => {
 
       <Authors
         show={page === 'authors'}
+        setError={ notify }
       />
 
       <Books

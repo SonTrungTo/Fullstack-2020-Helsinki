@@ -13,6 +13,7 @@ const Books = (props) => {
   }
 
   const books = result.data.allBooks;
+  // Exercise 8.19 here...
 
   return (
     <div>
