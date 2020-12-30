@@ -57,6 +57,7 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
     me: User!
+    allGenres: [String!]!
   }
 
   type Mutation {
@@ -101,7 +102,21 @@ const resolvers = {
         return booksByAuthorAndGenre;
       }
     },
-    allAuthors: () => Author.find({})
+    allAuthors: () => Author.find({}),
+    allGenres: async () => {
+      const allBooks = await Book.find({})
+        .populate('author', 'name born');
+      const collectionOfGenres = allBooks.map(book => book.genres);
+      const allGenres = collectionOfGenres.reduce((total, currentArray) => {
+        for (const genre of currentArray) {
+          if (!total.includes(genre)) {
+            total.push(genre);
+          }
+        }
+        return total;
+      }, []);
+      return allGenres;
+    }
   },
 
   Author: {

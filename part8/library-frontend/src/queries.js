@@ -18,7 +18,8 @@ export const ALL_BOOKS = gql`
             author {
                 name
                 born
-            }
+            },
+            genres
         }
     }
 `;
@@ -64,5 +65,11 @@ export const LOGIN = gql`
         ) {
             value
         }
+    }
+`;
+
+export const ALL_GENRES = gql`
+    query {
+        allGenres
     }
 `;

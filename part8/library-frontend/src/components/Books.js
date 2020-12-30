@@ -1,9 +1,11 @@
-import React from 'react'
-import { ALL_BOOKS } from '../queries';
+import React, { useState } from 'react'
+import { ALL_BOOKS, ALL_GENRES } from '../queries';
 import { useQuery } from '@apollo/client';
 
 const Books = (props) => {
+  const [ genre, setGenre ] = useState('all genres');
   const result = useQuery(ALL_BOOKS);
+  const genresResult = useQuery(ALL_GENRES);
   if (!props.show) {
     return null
   }
@@ -13,7 +15,13 @@ const Books = (props) => {
   }
 
   const books = result.data.allBooks;
-  // Exercise 8.19 here...
+  const allGenres = genresResult.data.allGenres;
+  const sortedBooks = genre === 'all genres' ? books :
+    books.filter(book => book.genres.includes(genre));
+
+  const handleSort = genre => {
+    setGenre(genre);
+  };
 
   return (
     <div>
@@ -30,7 +38,7 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {books.map(a =>
+          {sortedBooks.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -39,6 +47,15 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
+
+      <div>
+        { allGenres.map(genre =>
+          <button key={ genre }
+          onClick={ () => handleSort(genre) }>{ genre }</button>) 
+        }
+        <button
+        onClick={ () => handleSort('all genres') }>all genres</button>
+      </div>
     </div>
   )
 }
