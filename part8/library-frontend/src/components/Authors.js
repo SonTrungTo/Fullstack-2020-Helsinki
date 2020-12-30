@@ -33,7 +33,7 @@ const Authors = ({ setError, show }) => {
       setError('Choose an author');
       return;
     }
-    setBirthYear({ variables: selectedOption.value, birthYear: Number(year) });
+    setBirthYear({ variables: { name: selectedOption.value, birthYear: Number(year) } });
 
     setYear('');
   }

@@ -75,7 +75,6 @@ const App = () => {
       
       { token && <Recommendation
         show={ page === 'recommend' }
-        setError={ notify }
       />
       }
 
