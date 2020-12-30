@@ -73,9 +73,11 @@ const App = () => {
         setToken={ setToken }
         setPage={ setPage } />
       
-      <Recommendation
+      { token && <Recommendation
         show={ page === 'recommend' }
+        setError={ notify }
       />
+      }
 
     </div>
   )

@@ -2,14 +2,15 @@ import React from 'react';
 import { ME, ALL_BOOKS } from '../queries';
 import { useQuery } from '@apollo/client';
 
-const Recommendation = ({ show }) => {
-    const resultMe = useQuery(ME);
+const Recommendation = ({ show, setError }) => {
+    const resultMe = useQuery(ME, {
+        onError: error => {
+            setError(error.graphQLErrors[0].message);
+        }
+    });
     const resultBooks = useQuery(ALL_BOOKS);
-    if (!show) {
+    if (!show || !resultMe.data) {
         return null;
-    }
-    if (resultMe.loading) {
-        return <div>loading...</div>;
     }
     const { favoriteGenre } = resultMe.data.me;
     const books = resultBooks.data.allBooks;
