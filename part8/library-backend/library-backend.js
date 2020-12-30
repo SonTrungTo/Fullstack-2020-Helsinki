@@ -116,6 +116,12 @@ const resolvers = {
         return total;
       }, []);
       return allGenres;
+    },
+    me: (root, args, { currentUser }) => {
+      if (!currentUser) {
+        throw new AuthenticationError('User must login to view his/her recommendation');
+      }
+      return currentUser;
     }
   },
 

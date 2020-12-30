@@ -29,7 +29,11 @@ const Authors = ({ setError, show }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    setBirthYear({ variables: { name: selectedOption.value, birthYear: Number(year) } });
+    if (!selectedOption) {
+      setError('Choose an author');
+      return;
+    }
+    setBirthYear({ variables: selectedOption.value, birthYear: Number(year) });
 
     setYear('');
   }
