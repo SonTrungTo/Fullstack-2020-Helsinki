@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries';
+import { ADD_BOOK, ALL_AUTHORS } from '../queries';
 import { useMutation } from '@apollo/client';
 
-const NewBook = (props) => {
+const NewBook = ({ show, setError, updateCacheWith }) => {
   const [title, setTitle] = useState('')
   const [author, setAuhtor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
   const [ addBook, result ] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+    refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => {
-      props.setError(error.graphQLErrors[0].message);
+      setError(error.graphQLErrors[0].message);
+    },
+    update: (store, response) => {
+      updateCacheWith(response.data.addBook);
     }
   });
 
   useEffect(() => {
     if (result.data && result.data.addBook === null) {
-      props.setError('Invalid input');
+      setError('Invalid input');
     }
   }, [result.data]); // eslint-disable-line
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 

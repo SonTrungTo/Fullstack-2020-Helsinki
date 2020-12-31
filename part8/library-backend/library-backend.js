@@ -1,4 +1,5 @@
-const { ApolloServer, gql, UserInputError, AuthenticationError } = require('apollo-server')
+const { ApolloServer, gql, UserInputError, AuthenticationError, 
+  PubSub } = require('apollo-server')
 const mongoose = require('mongoose');
 const Book = require('./models/Book');
 const Author = require('./models/Author');
@@ -9,6 +10,7 @@ require('dotenv').config();
 // Now we connect the backend to MongoDB Atlas
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
+const pubsub = new PubSub();
 
 console.log('conneting to Mongo DB via', MONGO_URI);
 
@@ -80,6 +82,10 @@ const typeDefs = gql`
       favoriteGenre: String!
     ): User
   }
+
+  type Subscription {
+    bookAdded: Book!
+  }
 `
 
 const resolvers = {
@@ -102,7 +108,17 @@ const resolvers = {
         return booksByAuthorAndGenre;
       }
     },
-    allAuthors: () => Author.find({}),
+    allAuthors: async () => {
+      const authors = await Author.find({})
+        .populate('bookCount');
+
+      return authors.map(author => ({
+        name: author.name,
+        born: author.born,
+        bookCount: author.bookCount.length,
+        id: author.id
+      }));
+    },
     allGenres: async () => {
       const allBooks = await Book.find({})
         .populate('author', 'name born');
@@ -125,15 +141,6 @@ const resolvers = {
     }
   },
 
-  Author: {
-    bookCount: async (root) => {
-      const allBooks = await Book.find({})
-        .populate('author', 'name born');
-      const bookNumber = allBooks.filter(book => book.author.name === root.name).length;
-      return bookNumber;
-    }
-  },
-
   Mutation: {
     addBook: async (root, args, { currentUser }) => {
       if (!currentUser) {
@@ -147,14 +154,17 @@ const resolvers = {
         });
       }
 
-      if (!args.title || !args.published || !args.title
-        || args.genres.length === 0) {
-        return null;
+      if (!args.title || !args.published ||
+      args.genres.length === 0) {
+        throw new UserInputError('Invalid input', {
+          invalidArgs: args
+        });
       }
 
       const author = await Author.findOne({ name: args.author });
       const newAuthor = author ? author : new Author({ name: args.author });
       const newBook =  new Book({ ...args, author: newAuthor });
+      newAuthor.bookCount = newAuthor.bookCount.concat(newBook);
       try {
         await newBook.save();
         await newAuthor.save();
@@ -163,6 +173,9 @@ const resolvers = {
           invalidArgs: args
         });
       }
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: newBook });
+
       return newBook;
     },
     editAuthor: async (root, args, { currentUser }) => {
@@ -207,6 +220,12 @@ const resolvers = {
           });
         });
     }
+  },
+
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
   }
 }
 
@@ -227,6 +246,7 @@ const server = new ApolloServer({
   }
 });
 
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`)
+server.listen().then(({ url, subscriptionsUrl }) => {
+  console.log(`Server ready at ${url}`);
+  console.log(`Subscription ready at ${subscriptionsUrl}`);
 })

@@ -5,7 +5,8 @@ import NewBook from './components/NewBook'
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import Recommendation from './components/Recommendation';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, useSubscription } from '@apollo/client';
+import { BOOK_ADDED, ALL_BOOKS } from './queries';
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -28,6 +29,29 @@ const App = () => {
       setMessage(null);
     }, 5000);
   };
+
+  const updateCacheWith = addedItem => {
+    const includedIn = (set, object) =>
+      set.map(item => item.id).includes(object.id);
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+    if (!includedIn(dataInStore.allBooks, addedItem)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          allBooks: dataInStore.allBooks.concat(addedItem)
+        }
+      });
+    }
+  };
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded;
+      notify(`${ addedBook.title } by ${ addedBook.author.name } has been added!`);
+      updateCacheWith(addedBook);
+    }
+  });
 
   const logout = () => {
     localStorage.clear();
@@ -65,6 +89,7 @@ const App = () => {
       <NewBook
         show={page === 'add'}
         setError={ notify }
+        updateCacheWith={ updateCacheWith }
       />
 
       <LoginForm
