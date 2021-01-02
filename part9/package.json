@@ -14,6 +14,6 @@
   },
   "scripts": {
     "ts-node": "ts-node",
-    "calculator": "ts-node calculator.ts"
+    "calculateBmi": "ts-node bmiCalculator.ts"
   }
 }
