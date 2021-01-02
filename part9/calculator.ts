@@ -15,9 +15,11 @@ const parseArguments = (args: Array<string>): CalculatorValues => {
   if ( !isNaN(Number(process.argv[2])) && !isNaN(Number(process.argv[4])) ) {
     return {
       value1: Number(process.argv[2]),
-      value2,
-      op
+      value2: Number(process.argv[4]),
+      op: process.argv[3]
     };
+  } else {
+    throw new Error(`Invalid input: ${process.argv[2]} ${process.argv[3]} ${process.argv[4]}`);
   }
   
 };
@@ -37,10 +39,8 @@ const calculator = (a: number, b: number, op : Operation) : Result => {
 }
 
 try {
-  const a: number = Number(process.argv[2]);
-  const b: number = Number(process.argv[4]);
-  const op: string = String(process.argv[3]);
-  console.log(`${a} ${op} ${b} = ${ calculator(a, b, op) }`);
+  const { value1, value2, op } = parseArguments(process.argv);
+  console.log(`${value1} ${op} ${value2} = ${ calculator(value1, value2, op) }`);
 } catch (e) {
   console.log('Something went wrong, error message: ', e.message);
 }
