@@ -1,11 +1,9 @@
-export {};
-
 interface bmiInputs {
     height: number;
     weight: number;
 };
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
     const bmi = Number((weight / Math.pow(height * 0.01, 2)).toFixed(2));
     switch (true) {
         case ( bmi < 18.5):
