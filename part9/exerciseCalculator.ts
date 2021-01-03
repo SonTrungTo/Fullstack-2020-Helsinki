@@ -1,5 +1,3 @@
-export {};
-
 type rating = 1 | 2 | 3;
 
 interface Result {
@@ -10,14 +8,14 @@ interface Result {
     success: boolean;
     rating: rating;
     ratingDescription: string;
-};
+}
 
 interface Arguments {
     targetHour: number;
     dailyHours: Array<number>;
-};
+}
 
-const calculateExercises = (targetHour: number, dailyHours: Array<number>): Result => {
+export const calculateExercises = (targetHour: number, dailyHours: Array<number>): Result => {
     const average = dailyHours.reduce((total, hour) => total + hour) / dailyHours.length;
 
     const calculateRating = (targetHour: number, averageHour: number): rating => {
@@ -80,5 +78,5 @@ try {
     const { targetHour, dailyHours } = parseArguments(process.argv);
     console.log(calculateExercises(targetHour, dailyHours));
 } catch (e) {
-    console.log('Something is wrong:', e.message);
+    console.log('Something is wrong:', e.message); // eslint-disable-line
 }

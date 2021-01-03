@@ -1,7 +1,7 @@
 interface bmiInputs {
     height: number;
     weight: number;
-};
+}
 
 export const calculateBmi = (height: number, weight: number): string => {
     const bmi = Number((weight / Math.pow(height * 0.01, 2)).toFixed(2));
@@ -44,5 +44,5 @@ try {
     const { height, weight } = parseArguments(process.argv);
     console.log(calculateBmi(height, weight));
 } catch (error) {
-    console.log('There was a problem with your program:', error.message);
+    console.log('There was a problem with your program:', error.message); // eslint-disable-line
 }
