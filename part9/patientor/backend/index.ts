@@ -1,8 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 
 const app = express();
 
-app.get('/ping', (_req, res) => {
+app.use(cors());
+
+app.get('/api/ping', (_req, res) => {
     res.send('pong');
 });
 

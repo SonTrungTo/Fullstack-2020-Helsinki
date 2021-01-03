@@ -1,13 +1,14 @@
 {
-  "name": "patientor",
+  "name": "patientor-back-end",
   "version": "1.0.0",
-  "description": "patientor app for part 9 of FullStack2020",
+  "description": "patientor server for part 9 of FullStack2020",
   "main": "index.js",
-  "repository": "https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part9/patientor",
+  "repository": "https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part9/patientor/backend",
   "author": "Son To",
   "license": "MIT",
   "private": false,
   "devDependencies": {
+    "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
@@ -23,6 +24,7 @@
     "start": "node build/index.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   }
 }
