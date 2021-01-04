@@ -26,8 +26,9 @@ const App: React.FC = () => {
         console.error(e);
       }
     };
-    fetchPatientList().then(() => console.log('patient list fetched!'),
-    (error) => console.log(error.message));
+    fetchPatientList()
+    .then(() => console.log('patient list fetched!'),
+      (error) => console.log(error.message));
   }, [dispatch]);
 
   return (
