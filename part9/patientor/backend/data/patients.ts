@@ -1,6 +1,6 @@
-import { PatientWithoutSsn, Patient } from '../types';
+import { Patient } from '../types';
 
-export const PatientEntries: Patient[] = [
+const PatientEntries: Patient[] = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -43,11 +43,4 @@ export const PatientEntries: Patient[] = [
     }
 ];
 
-export const PatientEntriesWithoutSsn: PatientWithoutSsn[] =
-    PatientEntries.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-        id,
-        name,
-        dateOfBirth,
-        gender,
-        occupation
-    }));
+export default PatientEntries;
