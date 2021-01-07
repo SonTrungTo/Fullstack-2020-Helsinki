@@ -4,21 +4,26 @@ import './index.css';
 import Header from './components/Header';
 import Content from './components/Content';
 import Total from './components/Total';
+import { CoursePart } from './types';
 
 const App: React.FC = () => {
   const courseName = "Half Stack application development";
-  const courseParts = [
+  const courseParts: CoursePart[] = [
     {
       name: "Fundamentals",
-      exercisesCount: 10
+      exercisesCount: 10,
+      description: "This is an awesome course part"
     },
     {
       name: "Using props to pass data",
-      exercisesCount: 7
+      exercisesCount: 7,
+      groupProjectCount: 3
     },
     {
       name: "Deeper type usage",
-      exercisesCount: 14
+      exercisesCount: 14,
+      description: "Confusing description",
+      exerciseSubmissionLink: "https://fake-exercise-submit.made-up-url.dev"
     }
   ];
 
