@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { NewPatientEntry, Gender } from './types';
 
 const toNewPatientEntry = (object: any): NewPatientEntry => {
@@ -19,7 +20,7 @@ const parseName = (name: any): string => {
 };
 
 const parseDateOfBirth = (date: any): string => {
-    if (!date || !isString(date) || !isDate(date)) {
+    if (!date || !isString(date) || !isDate(date)) {
         throw new Error('Invalid or missing birthday: '+ date);
     }
     return date;
