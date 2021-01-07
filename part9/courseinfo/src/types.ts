@@ -21,4 +21,8 @@ interface CoursePartThree extends CoursePartBaseWithDescription {
     exerciseSubmissionLink: string;
 }
 
-export type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree;
+interface MyCoursePart extends CoursePartBaseWithDescription {
+    name: "Part 9 of FS2020";
+}
+
+export type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree | MyCoursePart;
