@@ -4,7 +4,7 @@ import { Patient } from "../types";
 export type Action =
     {
       type: "SHOW_PATIENT";
-      payload: Patient;
+      payload: Patient | null;
     }
   | {
       type: "SET_PATIENT_LIST";
@@ -39,9 +39,7 @@ export const reducer = (state: State, action: Action): State => {
     case "SHOW_PATIENT":
       return {
         ...state,
-        patient: {
-          [action.payload.id]: action.payload
-        }
+        patient: action.payload
       };
     default:
       return state;
