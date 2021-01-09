@@ -50,7 +50,7 @@ const parseOccupation = (occupation: any): string => {
 
 const parseEntries = (entries: any[]): Entry[] => {
     if (!Array.isArray(entries) || !isEntry(entries)) {
-        throw new Error('Invalid entry type!');
+        throw new Error('Invalid entry structure!');
     }
     return entries;
 };
