@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { NewPatientEntry, Gender } from './types';
+import { NewPatientEntry, Gender, Entry } from './types';
 
 const toNewPatientEntry = (object: any): NewPatientEntry => {
     return {
@@ -8,7 +8,8 @@ const toNewPatientEntry = (object: any): NewPatientEntry => {
         dateOfBirth: parseDateOfBirth(object.dateOfBirth),
         ssn: parseSsn(object.ssn),
         gender: parseGender(object.gender),
-        occupation: parseOccupation(object.occupation)
+        occupation: parseOccupation(object.occupation),
+        entries: parseEntries(object.entries)
     };
 };
 
@@ -47,6 +48,13 @@ const parseOccupation = (occupation: any): string => {
     return occupation;
 };
 
+const parseEntries = (entries: any[]): Entry[] => {
+    if (!Array.isArray(entries) || !isEntry(entries)) {
+        throw new Error('Invalid entry type!');
+    }
+    return entries;
+};
+
 const isString = (str: any): str is string => {
     return typeof str === "string" || str instanceof String;
 };
@@ -57,6 +65,25 @@ const isDate = (date: string): boolean => {
 
 const isGender = (param: any): param is Gender => {
     return Object.values(Gender).includes(param);
+};
+
+const isEntry = (param: any[]): param is Entry[] => {
+    param.forEach(entry => {
+        switch (entry.type) {
+            case 'Hospital':
+                break;
+
+            case 'OccupationalHealthcare':
+                break;
+
+            case 'HealthCheck':
+                break;
+        
+            default:
+                throw new Error(`Unexpected entry type: ${JSON.stringify(entry)}`);
+        }
+    });
+    return true;
 };
 
 export default toNewPatientEntry;
