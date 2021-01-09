@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useStateValue } from '../state';
 import { Gender, Patient } from '../types';
 import { apiBaseUrl } from '../constants';
+import { showPatient } from '../state/reducer';
 
 const PatientInfo: React.FC = () => {
     const [{ patient }, dispatch] = useStateValue();
@@ -16,7 +17,7 @@ const PatientInfo: React.FC = () => {
             const { data: patientFromApi } = await axios.get<Patient | null>(
               `${apiBaseUrl}/patients/${id}`
             );
-            dispatch({ type: "SHOW_PATIENT", payload: patientFromApi });
+            dispatch(showPatient(patientFromApi));
           } catch (error) {
             console.error(error);
           }
