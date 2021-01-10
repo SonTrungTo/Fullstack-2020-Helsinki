@@ -49,11 +49,35 @@ const PatientInfo: React.FC = () => {
         <div className="App">
             <Container>
                 <h1>{patient.name} {patientGenderReactElement(patient.gender)} </h1>
-                <ul>
-                    <li>ssn: {patient.ssn}</li>
-                    <li>occupation: {patient.occupation}</li>
-                    <li>date of birth: {patient.dateOfBirth}</li>
-                </ul>
+                <div style={{marginTop: 20, marginBottom: 20}}>
+                    <div>ssn: {patient.ssn}</div>
+                    <div>occupation: {patient.occupation}</div>
+                    <div>date of birth: {patient.dateOfBirth}</div>
+                </div>
+                { patient.entries.length === 0 ? null :
+                <div>
+                    <h3>entries</h3>
+                    {patient.entries.map(entry =>
+                        <div key={entry.id}>
+                            <p>{ entry.date }{" "}
+                                <span style={{fontStyle: 'italic', marginLeft: 10}}>
+                                    {entry.description}
+                                </span>
+                            </p>
+                            <ul>
+                                { Array.isArray(entry.diagnosisCodes) ?
+                                entry.diagnosisCodes.map(code =>
+                                    <li key={ code }>
+                                        { code }
+                                    </li>
+                                    )
+                                : null
+                                }
+                            </ul>
+                        </div>
+                        )
+                    }
+                </div> }
             </Container>
         </div>
     );
