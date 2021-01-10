@@ -7,6 +7,7 @@ import { useStateValue } from '../state';
 import { Gender, Patient, Diagnosis } from '../types';
 import { apiBaseUrl } from '../constants';
 import { showPatient, setDiagnosesList } from '../state/reducer';
+import EntryDetails from "../EntryDetails";
 
 const PatientInfo: React.FC = () => {
     const [{ patient, diagnoses }, dispatch] = useStateValue();
@@ -71,7 +72,6 @@ const PatientInfo: React.FC = () => {
         return !diagnoses[code] ? null : diagnoses[code].name;
     };
 
-
     if (!patient) {
         return null;
     }
@@ -90,11 +90,7 @@ const PatientInfo: React.FC = () => {
                     <h3>entries</h3>
                     {patient.entries.map(entry =>
                         <div key={entry.id}>
-                            <p>{ entry.date }{" "}
-                                <span style={{fontStyle: 'italic', marginLeft: 10}}>
-                                    {entry.description}
-                                </span>
-                            </p>
+                            <EntryDetails entry={ entry } />
                             <ul>
                                 { Array.isArray(entry.diagnosisCodes) ?
                                 entry.diagnosisCodes.map(code =>

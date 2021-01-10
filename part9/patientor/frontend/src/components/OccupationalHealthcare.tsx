@@ -8,7 +8,7 @@ const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry }>
     = ({ entry }) => {
         return (
             <div style={{ width: '100%' }}>
-                <Card>
+                <Card fluid>
                     <CardContent>
                         <CardHeader>
                             { entry.date }
