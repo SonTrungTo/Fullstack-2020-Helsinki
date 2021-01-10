@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { useStateValue } from '../state';
-import { Gender, Patient } from '../types';
+import { Gender, Patient, Diagnosis } from '../types';
 import { apiBaseUrl } from '../constants';
-import { showPatient } from '../state/reducer';
+import { showPatient, setDiagnosesList } from '../state/reducer';
 
 const PatientInfo: React.FC = () => {
-    const [{ patient }, dispatch] = useStateValue();
+    const [{ patient, diagnoses }, dispatch] = useStateValue();
     const { id } = useParams<{id: string}>();
     React.useEffect(() => {
         const fetchPatient = async (id: string) => {
@@ -29,6 +29,31 @@ const PatientInfo: React.FC = () => {
         }
     
       }, [id]);
+
+      React.useEffect(() => {
+        const fetchDiagnosesList = async () => {
+            try {
+                const { data: diagnosesFromApi } = await axios.get<Diagnosis[]>(
+                    `${apiBaseUrl}/diagnoses`
+                );
+                dispatch(setDiagnosesList(diagnosesFromApi));
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (patient !== null && patient.entries.length !== 0) {
+            for (const entry of patient.entries) {
+                if (Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length !== 0) {
+                    fetchDiagnosesList().then(() => console.log('Diagnoses list fetched!'),
+                        (error) => console.log(error.message));
+                    break;
+                }
+            }
+        }
+
+      }, [patient]);
+
     const patientGenderReactElement = (gender: Gender) => {
         switch (gender) {
             case 'male':
@@ -41,6 +66,12 @@ const PatientInfo: React.FC = () => {
                 return <Icon name='genderless' size='large' />;
         }
     };
+
+    const showDiagnosisName = (code: Diagnosis['code']): Diagnosis['name'] | null => {
+        return !diagnoses[code] ? null : diagnoses[code].name;
+    };
+
+
     if (!patient) {
         return null;
     }
@@ -69,6 +100,9 @@ const PatientInfo: React.FC = () => {
                                 entry.diagnosisCodes.map(code =>
                                     <li key={ code }>
                                         { code }
+                                        <span style={{marginLeft: 10}}>
+                                            { showDiagnosisName(code) }
+                                        </span>
                                     </li>
                                     )
                                 : null
