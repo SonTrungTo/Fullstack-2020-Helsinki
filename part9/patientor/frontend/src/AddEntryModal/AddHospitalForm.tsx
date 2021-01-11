@@ -17,7 +17,7 @@ interface Props {
     onCancel: () => void;
 }
 
-const AddOccupationalForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+const AddHospitalForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     const [{ diagnoses }] = useStateValue();
 
     return (
@@ -51,8 +51,8 @@ const AddOccupationalForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
             if (!values.description) {
                 errors.description = requiredError;
             }
-            if () {
-                errors.sickLeave = missingDateError;
+            if (!values.discharge.date || !values.discharge.criteria) {
+                errors.discharge = missingDischargeError;
             }
             return errors;
         }}
@@ -85,21 +85,15 @@ const AddOccupationalForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                             setFieldValue={ setFieldValue }
                         />
                         <Field
-                            label="Employer Name"
-                            name="employerName"
-                            placeholder="Place of employment"
-                            component={TextField}
-                        />
-                        <Field
-                            label="Sick Leave Start Date"
-                            name="sickLeave.startDate"
+                            label="Date of Discharge"
+                            name="discharge.date"
                             placeholder="YYYY-MM-DD"
                             component={TextField}
                         />
                         <Field
-                            label="Sick Leave End Date"
-                            name="sickLeave.endDate"
-                            placeholder="YYYY-MM-DD"
+                            label="Criteria for Discharge"
+                            name="discharge.criteria"
+                            placeholder="Criteria for Discharge"
                             component={TextField}
                         />
                         <Grid>
@@ -128,4 +122,4 @@ const AddOccupationalForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     );
 };
 
-export default AddOccupationalForm;
+export default AddHospitalForm;

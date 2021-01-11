@@ -4,11 +4,13 @@ import AddHealthEntryForm,
     { HealthEntryFormValues } from "./AddHealthEntryForm";
 import AddOccupationalForm from "./AddOccupationalHealthcareForm";
 import { OccupationalEntryFormValues } from "./AddOccupationalHealthcareForm";
+import AddHospitalForm, { HospitalEntryFormValues } from "./AddHospitalForm";
 import { EntryOption } from "../AddPatientModal/FormField";
 
 export type EntryForm =
     | HealthEntryFormValues
-    | OccupationalEntryFormValues;
+    | OccupationalEntryFormValues
+    | HospitalEntryFormValues;
 
 interface Props {
     modalOpen: boolean;
@@ -33,6 +35,9 @@ const AddPatientModal = ({ modalOpen, onClose, onSubmit, error }: Props) => {
 
             case 'OccupationalHealthcare':
                 return <AddOccupationalForm onSubmit={onSubmit} onCancel={onClose} />;
+
+            case 'Hospital':
+                return <AddHospitalForm onSubmit={onSubmit} onCancel={onClose} />;
         
             default:
                 return null;
