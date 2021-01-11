@@ -1,6 +1,19 @@
 # [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
 # [Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/73e0362267388c3329588af78459661d)
 
+## THE END
+- This is the final part of the modern web development course. There are still part 10 (React Native) and part 11 (CI/CD),
+but they have to be dealt with in separate repositories since that was what the instructions said, and
+seperate certificates for each part will be given respectively.
+- There may still be updates for links to part 10 and part 11.
+
+## [Part 9](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part9)
+- Typescript and its ecosystem (Eslint, tsconfig). Built three different apps for this part:
+a calculator, a courseinfo (from part 0) and a patientor app, the latest of which was designed
+by developers at Terveystalo.
+- Small note: The workload on this part is the heaviest, since we are dealing with both frontend
+and backend, the former of which uses SemanticUI React and Formik to handle state management.
+
 ## [Part 8](https://github.com/SonTrungTo/Fullstack-2020-Helsinki/tree/master/part8)
 - 26 exercises are about GraphQL and its ecosystem @apollo/client, apollo-server with hooks.
 Advanced features, including Subscriptions and updating caches, are also covered!
