@@ -20,22 +20,22 @@ router.get('/:id', (req, res) => {
     }
 });
 
-router.post('/:id/entries', (req, res) => {
-    const id = req.params.id;
-    
+router.post('/', (req, res) => {
     try {
-        const newEntry = toNewEntry(req.body);
-        const addedEntry = patientService.addEntry(id, newEntry);
+        const newEntry = toNewPatientEntry(req.body);
+        const addedEntry = patientService.addPatient(newEntry);
         res.json(addedEntry);
     } catch (error) {
         res.status(400).send(error.message);
     }
 });
 
-router.post('/', (req, res) => {
+router.post('/:id/entries', (req, res) => {
+    const id = req.params.id;
+    
     try {
-        const newEntry = toNewPatientEntry(req.body);
-        const addedEntry = patientService.addPatient(newEntry);
+        const newEntry = toNewEntry(req.body);
+        const addedEntry = patientService.addEntry(id, newEntry);
         res.json(addedEntry);
     } catch (error) {
         res.status(400).send(error.message);
