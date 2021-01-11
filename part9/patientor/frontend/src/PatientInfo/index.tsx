@@ -1,17 +1,21 @@
-import React from 'react';
-import { Container, Icon } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Container, Icon, Button } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import { useStateValue } from '../state';
-import { Gender, Patient, Diagnosis } from '../types';
+import { Gender, Patient, Diagnosis, Entry } from '../types';
 import { apiBaseUrl } from '../constants';
-import { showPatient, setDiagnosesList } from '../state/reducer';
+import { showPatient, setDiagnosesList, addEntry } from '../state/reducer';
 import EntryDetails from "../EntryDetails";
+import AddPatientModal from "../AddEntryModal";
+import { HealthEntryFormValues } from '../AddEntryModal/AddHealthEntryForm';
 
 const PatientInfo: React.FC = () => {
     const [{ patient, diagnoses }, dispatch] = useStateValue();
     const { id } = useParams<{id: string}>();
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [error, setError]= useState<string | undefined>(undefined);
     React.useEffect(() => {
         const fetchPatient = async (id: string) => {
           try {
@@ -72,6 +76,27 @@ const PatientInfo: React.FC = () => {
         return !diagnoses[code] ? null : diagnoses[code].name;
     };
 
+    const openModal = (): void => setModalOpen(true);
+
+    const closeModal = (): void => {
+        setModalOpen(false);
+        setError(undefined);
+    };
+
+    const submitNewEntry = async (values: HealthEntryFormValues) => {
+        try {
+            const { data: addedEntry } = await axios.post<Entry>(
+                `${apiBaseUrl}/patients/${id}/entries`,
+                values
+            );
+            dispatch(addEntry({entry: addedEntry, id}));
+            closeModal();
+        } catch (e) {
+            console.error(e.response.data);
+            setError(e.response.data.error);
+        }
+    };
+
     if (!patient) {
         return null;
     }
@@ -109,6 +134,13 @@ const PatientInfo: React.FC = () => {
                     }
                 </div> }
             </Container>
+            <AddPatientModal
+            modalOpen={modalOpen}
+            onSubmit={submitNewEntry}
+            onClose={closeModal}
+            error={error}
+            />
+            <Button onClick={ () => openModal() }>Add</Button>
         </div>
     );
 };
