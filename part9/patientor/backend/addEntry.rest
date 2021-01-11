@@ -1,10 +1,11 @@
-POST http://localhost:3001/api/patients
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
 Content-Type: application/json
 
 {
-    "name": "Son To",
-    "dateOfBirth": "01/10/1992",
-    "ssn": "0213832-123Y",
-    "gender": "male",
-    "occupation": "Terminator"
+    "type": "HealthCheck",
+    "date": "2021-01-11",
+    "specialist": "Jack ma",
+    "description": "McClane is loving life",
+    "diagnosisCodes": [],
+    "healthCheckRating": 3
 }

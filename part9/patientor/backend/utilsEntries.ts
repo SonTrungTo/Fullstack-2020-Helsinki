@@ -149,3 +149,5 @@ const isSickLeave = (param: any): param is SickLeave => {
     }
     return true;
 };
+
+export default toNewEntry;
