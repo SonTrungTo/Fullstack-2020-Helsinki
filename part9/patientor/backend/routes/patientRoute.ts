@@ -19,6 +19,10 @@ router.get('/:id', (req, res) => {
     }
 });
 
+router.post('/:id/entries', (req, res) => {
+    const id = req.params.id;
+});
+
 router.post('/', (req, res) => {
     try {
         const newEntry = toNewPatientEntry(req.body);

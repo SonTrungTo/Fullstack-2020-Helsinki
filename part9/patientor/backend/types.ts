@@ -10,6 +10,11 @@ export type Entry =
     | OccupationalHealthcareEntry
     | HospitalEntry;
 
+export type NewEntry = 
+    | Omit<HealthEntry, 'id'>
+    | Omit<OccupationalHealthcareEntry, 'id'>
+    | Omit<HospitalEntry, 'id'>;
+
 interface BaseEntry {
     id: string;
     date: string;
