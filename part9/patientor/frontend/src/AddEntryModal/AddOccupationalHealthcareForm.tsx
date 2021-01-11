@@ -2,23 +2,22 @@ import React from "react";
 import { Field, Formik, Form } from "formik";
 import { Grid, Button } from "semantic-ui-react";
 
-import { TextField, NumberField,
-    DiagnosisSelection } from "../AddPatientModal/FormField";
-import { HealthEntry, HealthCheckRating } from "../types";
+import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
+import { OccupationalHealthcareEntry } from "../types";
 import { useStateValue } from "../state";
 
 /* 
  * We are supporting only one entry: HealthEntry, omitting id
  * since it is irrelevant.
  */
-export type HealthEntryFormValues = Omit<HealthEntry, 'id'>;
+export type OccupationalEntryFormValues = Omit<OccupationalHealthcareEntry, 'id'>;
 
 interface Props {
-    onSubmit: (values: HealthEntryFormValues) => void;
+    onSubmit: (values: OccupationalEntryFormValues) => void;
     onCancel: () => void;
 }
 
-const AddHealthEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+const AddOccupationalForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     const [{ diagnoses }] = useStateValue();
 
     return (
@@ -26,15 +25,17 @@ const AddHealthEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         initialValues={{
             date: '',
             specialist: '',
-            type: 'HealthCheck',
+            type: 'OccupationalHealthcare',
             description: '',
             diagnosisCodes: [],
-            healthCheckRating: HealthCheckRating.Healthy
+            employerName: '',
+            sickLeave: undefined
         }}
         onSubmit={onSubmit}
         validate={values => {
             const requiredError = 'Field is required';
             const wrongTypeError = 'Wrong Type of Entry';
+            const missingDateError = 'Missing start/end date of sick leave';
             const errors: { [field: string]: string } = {};
             if (!values.date) {
                 errors.date = requiredError;
@@ -42,11 +43,15 @@ const AddHealthEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
             if (!values.specialist) {
                 errors.specialist = requiredError;
             }
-            if (values.type !== 'HealthCheck') {
+            if (values.type !== 'OccupationalHealthcare') {
                 errors.type = wrongTypeError;
             }
             if (!values.description) {
                 errors.description = requiredError;
+            }
+            if (values.sickLeave && ((!values.sickLeave.startDate && values.sickLeave.endDate)
+            || (values.sickLeave.startDate && !values.sickLeave?.endDate))) {
+                errors.sickLeave = missingDateError;
             }
             return errors;
         }}
@@ -79,12 +84,22 @@ const AddHealthEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                             setFieldValue={ setFieldValue }
                         />
                         <Field
-                            label="Health Rating"
-                            name="healthCheckRating"
-                            value={ 0 }
-                            min={0}
-                            max={3}
-                            component={NumberField}
+                            label="Employer Name"
+                            name="employerName"
+                            placeholder="Place of employment"
+                            component={TextField}
+                        />
+                        <Field
+                            label="Sick Leave Start Date"
+                            name="sickLeave.startDate"
+                            placeholder="YYYY-MM-DD"
+                            component={TextField}
+                        />
+                        <Field
+                            label="Sick Leave End Date"
+                            name="sickLeave.endDate"
+                            placeholder="YYYY-MM-DD"
+                            component={TextField}
                         />
                         <Grid>
                             <Grid.Column floated="left" width={5}>
@@ -112,4 +127,4 @@ const AddHealthEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     );
 };
 
-export default AddHealthEntryForm;
+export default AddOccupationalForm;

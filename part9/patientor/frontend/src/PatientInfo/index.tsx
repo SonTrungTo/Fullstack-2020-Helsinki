@@ -9,7 +9,7 @@ import { apiBaseUrl } from '../constants';
 import { showPatient, setDiagnosesList, addEntry } from '../state/reducer';
 import EntryDetails from "../EntryDetails";
 import AddPatientModal from "../AddEntryModal";
-import { HealthEntryFormValues } from '../AddEntryModal/AddHealthEntryForm';
+import { EntryForm } from '../AddEntryModal';
 
 const PatientInfo: React.FC = () => {
     const [{ patient, diagnoses }, dispatch] = useStateValue();
@@ -83,7 +83,7 @@ const PatientInfo: React.FC = () => {
         setError(undefined);
     };
 
-    const submitNewEntry = async (values: HealthEntryFormValues) => {
+    const submitNewEntry = async (values: EntryForm) => {
         try {
             const { data: addedEntry } = await axios.post<Entry>(
                 `${apiBaseUrl}/patients/${id}/entries`,
