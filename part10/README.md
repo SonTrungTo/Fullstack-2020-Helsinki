@@ -1,1 +1,1 @@
-## Part 10 is moved here.
+## Part 10 is moved [here](https://github.com/SonTrungTo/ReactNative_part10_2020).
