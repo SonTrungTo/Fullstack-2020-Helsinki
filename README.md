@@ -1,5 +1,6 @@
 # [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
 # [Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/73e0362267388c3329588af78459661d)
+# [Certificate for React Native](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/4ab8ce71769023bd7be8db6bca1112c3)
 
 ## THE END
 - This is the final part of the modern web development course. There is only the remaining part 11 (CI/CD).
