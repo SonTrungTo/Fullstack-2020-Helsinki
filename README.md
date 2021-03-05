@@ -3,8 +3,8 @@
 # [Certificate for React Native](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/4ab8ce71769023bd7be8db6bca1112c3)
 
 ## THE END
-- This is the final part of the modern web development course. There is only the remaining part 11 (CI/CD).
-- There may still be updates for links to part 11.
+
+## Part 11 incoming...
 
 ## [Part 10](https://github.com/SonTrungTo/ReactNative_part10_2020)
 - All the configs necessary to build a complete project and familarity with React Native, as well
