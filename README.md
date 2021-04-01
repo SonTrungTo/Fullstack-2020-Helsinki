@@ -1,10 +1,13 @@
 # [Full stack Open 2020](https://fullstackopen.com/en) (100% solved exercises)
 # [Certificate](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/73e0362267388c3329588af78459661d)
 # [Certificate for React Native](https://studies.cs.helsinki.fi/stats/api/certificate/fs-react-native-2020/en/4ab8ce71769023bd7be8db6bca1112c3)
+# [Certificate for CI/CD](https://studies.cs.helsinki.fi/stats/api/certificate/fs-cicd/en/c459cd65268e0e495e011b5404b100bd)
 
 ## THE END
+This repo is officially finished on 1/4/2021 at 8:10AM, and it will remain here for future references.
 
-## Part 11 incoming...
+## [Part 11](https://github.com/SonTrungTo/full-stack-open-pokedex)
+- GithubActions configs for pokedex and my own project, [Sonsera](https://github.com/SonTrungTo/Online_studies_platform)
 
 ## [Part 10](https://github.com/SonTrungTo/ReactNative_part10_2020)
 - All the configs necessary to build a complete project and familarity with React Native, as well
